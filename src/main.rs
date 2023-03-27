@@ -2,6 +2,7 @@ use winit::event_loop::EventLoop;
 use winit::window::WindowBuilder;
 use winit::dpi::PhysicalSize;
 use winit::event::{Event, WindowEvent};
+use rayon::prelude::*;
 
 const IMAGE_WIDTH: usize = 256;
 const IMAGE_HEIGHT: usize = 256;
@@ -45,8 +46,16 @@ fn main() {
                 let t = std::time::Instant::now();
                 // render
                 let len = buffer.len();
-                buffer.iter_mut().enumerate().for_each(|(pixel_index, pixel)| {
-                    *pixel = Color::new(pixel_index as f64/len as f64, 0.0, 0.0).into();
+                let thread_count: usize = std::thread::available_parallelism().unwrap().into();
+                let chunk_size = len / thread_count;
+
+                buffer.par_chunks_mut(chunk_size).enumerate().for_each(|(chunk_index, chunk)| {
+                    chunk.iter_mut().enumerate().for_each(|(pixel_index, pixel)| {
+                        let global_pixel_index = pixel_index + chunk_index * chunk_size;
+                        let abs_x = global_pixel_index % window_size.0;
+                        let abs_y = global_pixel_index / window_size.0;
+                        *pixel = Color::new(abs_x as f64 / window_size.0 as f64, abs_y as f64 / window_size.1 as f64, 0.0).into();
+                    });
                 });
                 graphics_context.set_buffer(&buffer, window_size.0 as u16, window_size.1 as u16);
                 println!("FPS: {}", 1.0/t.elapsed().as_secs_f64());
