@@ -1,28 +1,21 @@
+#[warn(non_snake_case)]
+mod vec3;
+
 use winit::event_loop::EventLoop;
 use winit::window::WindowBuilder;
 use winit::dpi::PhysicalSize;
 use winit::event::{Event, WindowEvent};
 use rayon::prelude::*;
+use crate::vec3::Vec3;
 
 const IMAGE_WIDTH: usize = 256;
 const IMAGE_HEIGHT: usize = 256;
 
-#[derive(Clone, Copy)]
-struct Color {
-    r: f64,
-    g: f64,
-    b: f64,
-}
-
-impl Color {
-    fn new(r: f64, g: f64, b: f64) -> Self {
-        Color{r, g, b}
-    }
-}
+type Color = Vec3;
 
 impl From<Color> for u32 {
     fn from(color: Color) -> Self {
-        (color.b * 255.0) as u32 | ((color.g * 255.0) as u32) << 8 | ((color.r * 255.0) as u32) << 16
+        (color.b() * 255.0) as u32 | ((color.g() * 255.0) as u32) << 8 | ((color.r() * 255.0) as u32) << 16
     }
 }
 
