@@ -42,12 +42,14 @@ fn main() {
         control_flow.set_poll(); // use set_wait
         match event {
             Event::MainEventsCleared => {
+                let t = std::time::Instant::now();
                 // render
                 let len = buffer.len();
                 buffer.iter_mut().enumerate().for_each(|(pixel_index, pixel)| {
                     *pixel = Color::new(pixel_index as f64/len as f64, 0.0, 0.0).into();
                 });
                 graphics_context.set_buffer(&buffer, window_size.0 as u16, window_size.1 as u16);
+                println!("FPS: {}", 1.0/t.elapsed().as_secs_f64());
             }
             Event::WindowEvent {event, ..} => {
                 match event {
