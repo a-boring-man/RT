@@ -1,16 +1,20 @@
+use winit::event_loop::EventLoop; // create the nessessary context to create a windows
+use winit::window::WindowBuilder; // creater of windows
+use winit::dpi::PhysicalSize; // use to define the size of the window at its creation
+use winit::event::{Event, WindowEvent}; // capture event and window event like key press or resize respectivly
+use rayon::prelude::*; // use for multithreading
+
 #[warn(non_snake_case)]
 mod vec3;
 
-use winit::event_loop::EventLoop;
-use winit::window::WindowBuilder;
-use winit::dpi::PhysicalSize;
-use winit::event::{Event, WindowEvent};
-use rayon::prelude::*;
-use crate::vec3::Vec3;
+use crate::vec3::Vec3; // my vec3 class use for geometry arithmetic
 
-const IMAGE_WIDTH: usize = 256;
-const IMAGE_HEIGHT: usize = 256;
+// global constante
+const IMAGE_WIDTH: usize = 400;
+const ASPECT_RATIO: f64 = (16 / 9) as f64;
+const IMAGE_HEIGHT: usize = (IMAGE_WIDTH as f64 * ASPECT_RATIO) as usize;
 
+// aliassing
 type Color = Vec3;
 
 impl From<Color> for u32 {
@@ -21,8 +25,9 @@ impl From<Color> for u32 {
 
 fn main() {
     let mut window_size = (IMAGE_WIDTH, IMAGE_HEIGHT);
-    let background_color = Color::new(0.1, 0.1, 0.1);
+    let background_color = Color::new(0.2, 0.0, 0.5);
 
+    //initialazing all the windows stuff
     let event_loop = EventLoop::new();
     let window = WindowBuilder::new()
             .with_title("RT")
@@ -30,13 +35,13 @@ fn main() {
             .build(&event_loop).unwrap();
 
     let mut graphics_context = unsafe {softbuffer::GraphicsContext::new(&window, &window)}.unwrap();
-    let mut buffer = vec![background_color.into(); window_size.0 * window_size.1];
+    let mut buffer = vec![background_color.into(); window_size.0 * window_size.1]; // call the from impl for the type of data in background color
 
     event_loop.run(move |event, _, control_flow| {
         control_flow.set_poll(); // use set_wait
-        match event {
-            Event::MainEventsCleared => {
-                let t = std::time::Instant::now();
+        match event { // in case of an event do the following
+            Event::MainEventsCleared => { // after all the event have been handle do this (use to run the loop indefinitly in case of no event)
+                let t = std::time::Instant::now(); // use for performance measuring
                 // render
                 let len = buffer.len();
                 let thread_count: usize = std::thread::available_parallelism().unwrap().into();
