@@ -5,7 +5,9 @@ use winit::event::{Event, WindowEvent}; // capture event and window event like k
 use rayon::prelude::*; // use for multithreading
 
 #[warn(non_snake_case)]
+// list all other file needed
 mod vec3;
+mod color;
 
 use crate::vec3::Vec3; // my vec3 class use for geometry arithmetic
 
@@ -35,6 +37,7 @@ fn main() {
             .build(&event_loop).unwrap();
 
     let mut graphics_context = unsafe {softbuffer::GraphicsContext::new(&window, &window)}.unwrap();
+    // fill the buffer for the first time with black pixel
     let mut buffer = vec![background_color.into(); window_size.0 * window_size.1]; // call the from impl for the type of data in background color
 
     event_loop.run(move |event, _, control_flow| {
@@ -42,19 +45,19 @@ fn main() {
         match event { // in case of an event do the following
             Event::MainEventsCleared => { // after all the event have been handle do this (use to run the loop indefinitly in case of no event)
                 let t = std::time::Instant::now(); // use for performance measuring
-                // render
                 let len = buffer.len();
-                let thread_count: usize = std::thread::available_parallelism().unwrap().into();
-                let chunk_size = len / thread_count;
+                let thread_count: usize = std::thread::available_parallelism().unwrap().into(); // use to know the number of thread
+                let chunk_size = len / thread_count; // use to slice the work by the number of thread
 
                 buffer.par_chunks_mut(chunk_size).enumerate().for_each(|(chunk_index, chunk)| {
                     chunk.iter_mut().enumerate().for_each(|(pixel_index, pixel)| {
-                        let global_pixel_index = pixel_index + chunk_index * chunk_size;
+                        let global_pixel_index = pixel_index + chunk_index * chunk_size; // the global pixel id
                         let abs_x = global_pixel_index % window_size.0;
                         let abs_y = global_pixel_index / window_size.0;
                         *pixel = Color::new(abs_x as f64 / window_size.0 as f64, abs_y as f64 / window_size.1 as f64, 0.0).into();
                     });
                 });
+                // display the changed buffer
                 graphics_context.set_buffer(&buffer, window_size.0 as u16, window_size.1 as u16);
                 println!("FPS: {}", 1.0/t.elapsed().as_secs_f64());
             }
