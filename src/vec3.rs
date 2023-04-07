@@ -23,6 +23,18 @@ impl Vec3 {
         self.length2().sqrt()
     }
 
+    pub fn normalize(&mut self) -> f64 {
+        let l: f64 = self.length();
+        *self /= l;
+        l
+    }
+
+    pub fn normalized(&self) -> Vec3 {
+        let mut v: Vec3 = self.clone();
+        v.normalize();
+        v
+    }
+
     pub fn x(&self) -> f64 {
         self.p[0]
     }

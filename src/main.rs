@@ -10,24 +10,21 @@ mod vec3;
 mod color;
 
 use crate::vec3::Vec3; // my vec3 class use for geometry arithmetic
+use crate::color::{background_color, into_color};
 
 // global constante
 const IMAGE_WIDTH: usize = 400;
 const ASPECT_RATIO: f64 = (16 / 9) as f64;
 const IMAGE_HEIGHT: usize = (IMAGE_WIDTH as f64 * ASPECT_RATIO) as usize;
+const FOV: f64 = 95.0;
 
 // aliassing
 type Color = Vec3;
 
-impl From<Color> for u32 {
-    fn from(color: Color) -> Self {
-        (color.b() * 255.0) as u32 | ((color.g() * 255.0) as u32) << 8 | ((color.r() * 255.0) as u32) << 16
-    }
-}
-
 fn main() {
     let mut window_size = (IMAGE_WIDTH, IMAGE_HEIGHT);
-    let background_color = Color::new(0.2, 0.0, 0.5);
+    let view_distance: f64 = (ASPECT_RATIO / 2.0) / (FOV / 2.0).tan();
+    let backgroun_color = Color::new(0.2, 0.0, 0.5);
 
     //initialazing all the windows stuff
     let event_loop = EventLoop::new();
@@ -38,7 +35,7 @@ fn main() {
 
     let mut graphics_context = unsafe {softbuffer::GraphicsContext::new(&window, &window)}.unwrap();
     // fill the buffer for the first time with black pixel
-    let mut buffer = vec![background_color.into(); window_size.0 * window_size.1]; // call the from impl for the type of data in background color
+    let mut buffer = vec![into_color(backgroun_color); window_size.0 * window_size.1]; // call the from impl for the type of data in background color
 
     event_loop.run(move |event, _, control_flow| {
         control_flow.set_poll(); // use set_wait
@@ -54,7 +51,7 @@ fn main() {
                         let global_pixel_index = pixel_index + chunk_index * chunk_size; // the global pixel id
                         let abs_x = global_pixel_index % window_size.0;
                         let abs_y = global_pixel_index / window_size.0;
-                        *pixel = Color::new(abs_x as f64 / window_size.0 as f64, abs_y as f64 / window_size.1 as f64, 0.0).into();
+                        *pixel = into_color(background_color(Vec3::new(view_distance, ((IMAGE_HEIGHT / 2) - abs_y) as f64 / (IMAGE_HEIGHT / 2) as f64, (abs_x - (IMAGE_WIDTH / 2)) as f64 / (IMAGE_WIDTH / 2) as f64)).normalized());
                     });
                 });
                 // display the changed buffer
@@ -68,7 +65,7 @@ fn main() {
                     },
                     WindowEvent::Resized(physical_size) => {
                         window_size = (physical_size.width as usize, physical_size.height as usize);
-                        buffer.resize(window_size.0 * window_size.1, background_color.into());
+                        buffer.resize(window_size.0 * window_size.1, into_color(backgroun_color));
                     }
                     _ => {},
                 }
