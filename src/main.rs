@@ -15,8 +15,7 @@ use crate::color::{background_color, into_color};
 
 // global constante
 const IMAGE_WIDTH: usize = 400;
-const ASPECT_RATIO: f64 = (16 / 9) as f64;
-const IMAGE_HEIGHT: usize = (IMAGE_WIDTH as f64 * ASPECT_RATIO) as usize;
+const IMAGE_HEIGHT: usize = 400;
 const FOV: f64 = 95.0;
 
 // aliassing
@@ -24,8 +23,9 @@ type Color = Vec3;
 
 fn main() {
     let mut window_size = (IMAGE_WIDTH, IMAGE_HEIGHT);
-    let view_distance: f64 = (ASPECT_RATIO / 2.0) / (FOV / 2.0).tan();
+    let view_distance: f64 = (IMAGE_WIDTH as f64 / 2.0) / (FOV.to_radians() / 2.0).tan();
     let backgroun_color = Color::new(0.2, 0.0, 0.5);
+    let vec = [Vec3::new(0.0, 0.0, 0.0); IMAGE_HEIGHT * IMAGE_WIDTH];
 
     //initialazing all the windows stuff
     let event_loop = EventLoop::new();
