@@ -7,6 +7,7 @@ use rayon::prelude::*; // use for multithreading
 #[warn(non_snake_case)]
 // list all other file needed
 mod vec3;
+mod camera;
 mod color;
 
 use crate::vec3::Vec3; // my vec3 class use for geometry arithmetic
