@@ -12,10 +12,12 @@ mod color;
 
 use crate::vec3::Vec3; // my vec3 class use for geometry arithmetic
 use crate::color::{background_color, into_color};
+use crate::camera::Camera;
 
 // global constante
 const IMAGE_WIDTH: usize = 400;
 const IMAGE_HEIGHT: usize = 400;
+const SIZE: usize = IMAGE_HEIGHT * IMAGE_WIDTH;
 const FOV: f64 = 95.0;
 
 // aliassing
@@ -25,7 +27,7 @@ fn main() {
     let mut window_size = (IMAGE_WIDTH, IMAGE_HEIGHT);
     let view_distance: f64 = (IMAGE_WIDTH as f64 / 2.0) / (FOV.to_radians() / 2.0).tan();
     let backgroun_color = Color::new(0.2, 0.0, 0.5);
-    let vec = [Vec3::new(0.0, 0.0, 0.0); IMAGE_HEIGHT * IMAGE_WIDTH];
+    let camera = Camera::<SIZE>::new(IMAGE_HEIGHT as u16, IMAGE_WIDTH as u16, FOV, Vec3::new(0.0, 0.0, 0.0));
 
     //initialazing all the windows stuff
     let event_loop = EventLoop::new();
