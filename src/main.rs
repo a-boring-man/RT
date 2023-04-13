@@ -25,9 +25,8 @@ type Color = Vec3;
 
 fn main() {
     let mut window_size = (IMAGE_WIDTH, IMAGE_HEIGHT);
-    let view_distance: f64 = (IMAGE_WIDTH as f64 / 2.0) / (FOV.to_radians() / 2.0).tan();
     let backgroun_color = Color::new(0.2, 0.0, 0.5);
-    let camera = Camera::<SIZE>::new(IMAGE_HEIGHT as u16, IMAGE_WIDTH as u16, FOV, Vec3::new(0.0, 0.0, 0.0));
+    let camera = Camera::<SIZE>::new(IMAGE_HEIGHT as usize, IMAGE_WIDTH as usize, FOV, Vec3::new(0.0, 0.0, 0.0));
 
     //initialazing all the windows stuff
     let event_loop = EventLoop::new();
@@ -52,9 +51,7 @@ fn main() {
                 buffer.par_chunks_mut(chunk_size).enumerate().for_each(|(chunk_index, chunk)| {
                     chunk.iter_mut().enumerate().for_each(|(pixel_index, pixel)| {
                         let global_pixel_index = pixel_index + chunk_index * chunk_size; // the global pixel id
-                        let abs_x = global_pixel_index % window_size.0;
-                        let abs_y = global_pixel_index / window_size.0;
-                        *pixel = into_color(background_color(Vec3::new(view_distance, ((IMAGE_HEIGHT / 2) - abs_y) as f64 / (IMAGE_HEIGHT / 2) as f64, (abs_x - (IMAGE_WIDTH / 2)) as f64 / (IMAGE_WIDTH / 2) as f64)).normalized());
+                        *pixel = background_color(camera.get_ray(global_pixel_index)).into_color();
                     });
                 });
                 // display the changed buffer

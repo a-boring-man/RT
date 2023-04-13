@@ -22,9 +22,13 @@ impl<const SIZE: usize> Camera<SIZE> {
 		let depth: f64 = (width as f64 / 2.0) / (fov / 2.0).tan();
 		for h in 0..heigth {
 			for w in 0..width {
-				camera.ray[(w * h + w) as usize] = Vec3::new(depth, ((heigth / 2) - h), (w - (width / 2))).normalized();
+				camera.ray[(w * h + w) as usize] = Vec3::new(depth, ((heigth / 2) - h) as f64, (w - (width / 2)) as f64).normalized();
 			}
 		}
 		camera
+	}
+
+	pub fn get_ray(&self, index: usize) -> Vec3 {
+		self.ray[index].clone()
 	}
 }

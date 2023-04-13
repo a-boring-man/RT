@@ -35,6 +35,10 @@ impl Vec3 {
         v
     }
 
+    pub fn into_color(&self) -> u32 {
+        ((self.r() * 255.0) as u32) << 16 | ((self.g() * 255.0) as u32) << 8 | (self.b() * 255.0) as u32
+    } 
+
     pub fn x(&self) -> f64 {
         self.p[0]
     }
