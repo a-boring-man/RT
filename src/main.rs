@@ -26,7 +26,7 @@ type Color = Vec3;
 fn main() {
     let mut window_size = (IMAGE_WIDTH, IMAGE_HEIGHT);
     let backgroun_color = Color::new(0.2, 0.0, 0.5);
-    let camera = Camera::<SIZE>::new(IMAGE_HEIGHT as usize, IMAGE_WIDTH as usize, FOV, Vec3::new(0.0, 0.0, 0.0));
+    let camera = Camera::new(IMAGE_HEIGHT as usize, IMAGE_WIDTH as usize, FOV, Vec3::new(0.0, 0.0, 0.0));
 
     //initialazing all the windows stuff
     let event_loop = EventLoop::new();
@@ -50,10 +50,11 @@ fn main() {
                 let chunk_size = len / thread_count; // use to slice the work by the number of thread
                 eprintln!("len : {}", len);
                 eprintln!("thread_count : {}", thread_count);
-                buffer.par_chunks_mut(chunk_size).enumerate().for_each(|(chunk_index, chunk)| {
+                buffer.chunks_mut(chunk_size).enumerate().for_each(|(chunk_index, chunk)| {
                     chunk.iter_mut().enumerate().for_each(|(pixel_index, pixel)| {
                         let global_pixel_index = pixel_index + chunk_index * chunk_size; // the global pixel id
                         *pixel = background_color(camera.get_ray(global_pixel_index)).into_color();
+                        eprintln!("{:?}", camera.get_ray(global_pixel_index));
                     });
                 });
                 // display the changed buffer
@@ -66,6 +67,7 @@ fn main() {
                         control_flow.set_exit();
                     },
                     WindowEvent::Resized(physical_size) => {
+                        eprintln!("update");
                         window_size = (physical_size.width as usize, physical_size.height as usize);
                         buffer.resize(window_size.0 * window_size.1, into_color(backgroun_color));
                     }

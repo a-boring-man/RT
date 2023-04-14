@@ -1,6 +1,6 @@
 use std::ops;
 
-#[derive(Copy, Clone, Default)]
+#[derive(Copy, Clone, Default, Debug)]
 pub struct Vec3 {
     p: [f64; 3],
 }
