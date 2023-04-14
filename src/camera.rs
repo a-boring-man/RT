@@ -1,5 +1,7 @@
+// depedency
 use crate::vec3::Vec3;
 
+// aliassing
 type Point3 = Vec3;
 
 pub struct Camera {
@@ -16,6 +18,9 @@ pub struct Camera {
 
 impl Camera {
 
+	/**
+	 * create and return a new camera
+	 */
 	pub fn new (heigth: usize, width: usize, fov: f64, origin: Point3) -> Self {
 		let mut camera = Camera { ray: Vec::with_capacity(width * heigth), origin, heigth, width, fov,
 			depth_unit_vector: Vec3::new(1.0, 0.0, 0.0), width_unit_vector: Vec3::new(0.0, 0.0, 1.0),
@@ -24,11 +29,17 @@ impl Camera {
 		camera
 	}
 
+	/**
+	 * return a copy of the ray at index index of camera
+	 */
 	pub fn get_ray(&self, index: usize) -> Vec3 {
 		// eprintln!("inside {}", index);
-		self.ray[index].clone()
+		self.ray[index]
 	}
 
+	/**
+	 * update camera size and ray
+	 */
 	pub fn update_size(&mut self, new_heigth: usize, new_width: usize, new_fov: f64) {
 		if new_heigth == self.heigth && new_width == self.width {return;}
 		self.heigth = new_heigth;
@@ -38,6 +49,9 @@ impl Camera {
 		self.update_ray();
 	}
 
+	/**
+	 * update camera ray
+	 */
 	pub fn update_ray(&mut self) {
 		self.ray.clear();
 		for h in 0..self.heigth {

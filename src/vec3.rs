@@ -1,40 +1,62 @@
-use std::ops;
+// dependency
+use std::ops; // use to implemente operator overload
 
 #[derive(Copy, Clone, Default, Debug)]
 pub struct Vec3 {
     p: [f64; 3],
 }
 
+/**
+ * square function
+ */
 pub fn sqr(n: f64) -> f64{
     n * n
 }
 
 impl Vec3 {
 
+    /**
+     * create a new vector
+     */
     pub fn new(x: f64, y: f64, z: f64) -> Self {
         Vec3 {p: [x, y, z]}
     }
 
+    /**
+     * return the length squared of self usefull to optimise calculation
+     */
     pub fn length2(&self) -> f64 {
         sqr(self.x()) + sqr(self.y()) + sqr(self.z())
     }
 
+    /**
+     * return the length of the vector
+     */
     pub fn length(&self) -> f64 {
         self.length2().sqrt()
     }
 
+    /**
+     * normalize the vector on site and return the old length
+     */
     pub fn normalize(&mut self) -> f64 {
         let l: f64 = self.length();
         *self /= l;
         l
     }
 
+    /**
+     * return a new normalized vector
+     */
     pub fn normalized(&self) -> Vec3 {
         let mut v: Vec3 = self.clone();
         v.normalize();
         v
     }
 
+    /**
+     * transforme a vector into a color
+     */
     pub fn into_color(&self) -> u32 {
         ((self.r() * 255.0) as u32) << 16 | ((self.g() * 255.0) as u32) << 8 | (self.b() * 255.0) as u32
     } 
@@ -62,6 +84,9 @@ impl Vec3 {
         self.p[2]
     }
 
+    /**
+     * set the new vector coordinate
+     */
     pub fn set(&mut self, x: f64, y:f64, z: f64) {
         self.p[0] = x;
         self.p[1] = y;
