@@ -15,10 +15,9 @@ use crate::color::{background_color, into_color};
 use crate::camera::Camera;
 
 // global constante
-const IMAGE_WIDTH: usize = 10;
-const IMAGE_HEIGHT: usize = 10;
-const SIZE: usize = IMAGE_HEIGHT * IMAGE_WIDTH;
-const FOV: f64 = 95.0;
+const IMAGE_WIDTH: usize = 850;
+const IMAGE_HEIGHT: usize = 600;
+const FOV: f64 = 145.0;
 
 // aliassing
 type Color = Vec3;
@@ -26,7 +25,7 @@ type Color = Vec3;
 fn main() {
     let mut window_size = (IMAGE_WIDTH, IMAGE_HEIGHT);
     let backgroun_color = Color::new(0.2, 0.0, 0.5);
-    let camera = Camera::new(IMAGE_HEIGHT as usize, IMAGE_WIDTH as usize, FOV, Vec3::new(0.0, 0.0, 0.0));
+    let mut camera = Camera::new(IMAGE_HEIGHT as usize, IMAGE_WIDTH as usize, FOV, Vec3::new(0.0, 0.0, 0.0));
 
     //initialazing all the windows stuff
     let event_loop = EventLoop::new();
@@ -48,18 +47,18 @@ fn main() {
                 // eprintln!("len {}", len);
                 let thread_count: usize = std::thread::available_parallelism().unwrap().into(); // use to know the number of thread
                 let chunk_size = len / thread_count; // use to slice the work by the number of thread
-                eprintln!("len : {}", len);
-                eprintln!("thread_count : {}", thread_count);
-                buffer.chunks_mut(chunk_size).enumerate().for_each(|(chunk_index, chunk)| {
+                //eprintln!("len : {}", len);
+                //eprintln!("thread_count : {}", thread_count);
+                buffer.par_chunks_mut(chunk_size).enumerate().for_each(|(chunk_index, chunk)| {
                     chunk.iter_mut().enumerate().for_each(|(pixel_index, pixel)| {
                         let global_pixel_index = pixel_index + chunk_index * chunk_size; // the global pixel id
                         *pixel = background_color(camera.get_ray(global_pixel_index)).into_color();
-                        eprintln!("{:?}", camera.get_ray(global_pixel_index));
+                        //eprintln!("{} {:?}",global_pixel_index,  camera.get_ray(global_pixel_index));
                     });
                 });
                 // display the changed buffer
                 graphics_context.set_buffer(&buffer, window_size.0 as u16, window_size.1 as u16);
-                //println!("FPS: {}", 1.0/t.elapsed().as_secs_f64());
+                println!("FPS: {}", 1.0/t.elapsed().as_secs_f64());
             }
             Event::WindowEvent {event, ..} => {
                 match event {
@@ -67,9 +66,10 @@ fn main() {
                         control_flow.set_exit();
                     },
                     WindowEvent::Resized(physical_size) => {
-                        eprintln!("update");
+                        // eprintln!("update");
                         window_size = (physical_size.width as usize, physical_size.height as usize);
-                        buffer.resize(window_size.0 * window_size.1, into_color(backgroun_color));
+                        camera.update_size(window_size.1, window_size.0, camera.fov());
+                        buffer.resize(window_size.0 * window_size.1, backgroun_color.into_color());
                     }
                     _ => {},
                 }

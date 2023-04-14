@@ -7,7 +7,7 @@ pub struct Camera {
 	origin: Point3,
 	heigth: usize,
 	width: usize,
-	depth: f64;
+	depth: f64,
 	fov: f64,
 	depth_unit_vector: Vec3,
 	width_unit_vector: Vec3,
@@ -19,14 +19,8 @@ impl Camera {
 	pub fn new (heigth: usize, width: usize, fov: f64, origin: Point3) -> Self {
 		let mut camera = Camera { ray: Vec::with_capacity(width * heigth), origin, heigth, width, fov,
 			depth_unit_vector: Vec3::new(1.0, 0.0, 0.0), width_unit_vector: Vec3::new(0.0, 0.0, 1.0),
-			heigth_unit_vector: Vec3::new(0.0, 1.0, 0.0) };
-		depth: f64 = (width as f64 / 2.0) / (fov / 2.0).tan();
-		for h in 0..heigth {
-			for w in 0..width {
-				// eprintln!("correct {}", (w * h + w) as usize);
-				camera.ray[(w * h + w) as usize] = (Vec3::new(depth, ((heigth as f64 / 2.0) as f64 - h as f64) as f64, (w as f64 - (width / 2) as f64) as f64) - origin).normalized();
-			}
-		}
+			heigth_unit_vector: Vec3::new(0.0, 1.0, 0.0), depth: (width as f64 / 2.0) / (fov.to_radians() / 2.0).tan() };
+		camera.update_ray();
 		camera
 	}
 
@@ -35,9 +29,26 @@ impl Camera {
 		self.ray[index].clone()
 	}
 
-	pub fn update_size(&mut self, new_heigth: usize, new_width: usize) {
+	pub fn update_size(&mut self, new_heigth: usize, new_width: usize, new_fov: f64) {
 		if new_heigth == self.heigth && new_width == self.width {return;}
 		self.heigth = new_heigth;
 		self.width = new_width;
+		self.fov = new_fov;
+		self.depth = (self.width as f64 / 2.0) / (self.fov.to_radians() / 2.0).tan();
+		self.update_ray();
+	}
+
+	pub fn update_ray(&mut self) {
+		self.ray.clear();
+		for h in 0..self.heigth {
+			for w in 0..self.width {
+				//eprintln!("correct {}", (w * h + w) as usize);
+				self.ray.push((Vec3::new(self.depth, ((self.heigth as f64 / 2.0) as f64 - h as f64) as f64, (w as f64 - (self.width / 2) as f64) as f64) - self.origin).normalized());
+			}
+		}
+	}
+
+	pub fn fov(&self) -> f64 {
+		self.fov
 	}
 }
