@@ -37,7 +37,7 @@ fn main() {
 
     let mut graphics_context = unsafe {softbuffer::GraphicsContext::new(&window, &window)}.unwrap();
     // fill the buffer for the first time with black pixel
-    let mut buffer = vec![into_color(backgroun_color); window_size.0 * window_size.1]; // call the from impl for the type of data in background color
+    let mut buffer = vec![backgroun_color.into_color(); window_size.0 * window_size.1]; // call the from impl for the type of data in background color
 
     event_loop.run(move |event, _, control_flow| {
         control_flow.set_poll(); // use set_wait
@@ -45,9 +45,11 @@ fn main() {
             Event::MainEventsCleared => { // after all the event have been handle do this (use to run the loop indefinitly in case of no event)
                 let t = std::time::Instant::now(); // use for performance measuring
                 let len = buffer.len();
+                // eprintln!("len {}", len);
                 let thread_count: usize = std::thread::available_parallelism().unwrap().into(); // use to know the number of thread
                 let chunk_size = len / thread_count; // use to slice the work by the number of thread
-
+                eprintln!("len : {}", len);
+                eprintln!("thread_count : {}", thread_count);
                 buffer.par_chunks_mut(chunk_size).enumerate().for_each(|(chunk_index, chunk)| {
                     chunk.iter_mut().enumerate().for_each(|(pixel_index, pixel)| {
                         let global_pixel_index = pixel_index + chunk_index * chunk_size; // the global pixel id
@@ -56,7 +58,7 @@ fn main() {
                 });
                 // display the changed buffer
                 graphics_context.set_buffer(&buffer, window_size.0 as u16, window_size.1 as u16);
-                println!("FPS: {}", 1.0/t.elapsed().as_secs_f64());
+                //println!("FPS: {}", 1.0/t.elapsed().as_secs_f64());
             }
             Event::WindowEvent {event, ..} => {
                 match event {
