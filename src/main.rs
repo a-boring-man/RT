@@ -15,8 +15,8 @@ use crate::color::{background_color, into_color};
 use crate::camera::Camera;
 
 // global constante
-const IMAGE_WIDTH: usize = 400;
-const IMAGE_HEIGHT: usize = 400;
+const IMAGE_WIDTH: usize = 10;
+const IMAGE_HEIGHT: usize = 10;
 const SIZE: usize = IMAGE_HEIGHT * IMAGE_WIDTH;
 const FOV: f64 = 95.0;
 
