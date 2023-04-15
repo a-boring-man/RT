@@ -19,10 +19,16 @@ impl<T> Matrix<T> {
     }
 
     pub fn new(nbr_col: u8, nbr_row: u8) -> Self {
+        let nbr_elm = nbr_col * nbr_row;
+        let data = vec![T::default(); nbr_elm as usize];
         Matrix {
-            nbr_elm: nbr_col * nbr_row,
-            data: Vec::with_capacity(nbr_elm),
+            nbr_elm,
+            data,
             ..
         }
+    }
+
+    pub fn new_filled(nbr_col: u8, nbr_row: u8, data: Vec<T>) {
+        
     }
 }
