@@ -8,6 +8,7 @@ use rayon::prelude::*; // use for multithreading
 mod vec3;
 mod camera;
 mod color;
+mod matrix;
 
 use crate::vec3::Vec3; // my vec3 class use for geometry arithmetic
 use crate::color::{background_color}; // the background debug color function
