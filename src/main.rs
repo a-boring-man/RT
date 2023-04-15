@@ -1,10 +1,9 @@
+#![allow(non_snake_case)]
 use winit::event_loop::EventLoop; // create the nessessary context to create a windows
 use winit::window::WindowBuilder; // creater of windows
 use winit::dpi::PhysicalSize; // use to define the size of the window at its creation
 use winit::event::{Event, WindowEvent}; // capture event and window event like key press or resize respectivly
 use rayon::prelude::*; // use for multithreading
-
-#[warn(non_snake_case)]
 // list all other file needed
 mod vec3;
 mod camera;

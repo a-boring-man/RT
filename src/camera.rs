@@ -11,9 +11,9 @@ pub struct Camera {
 	width: usize,
 	depth: f64,
 	fov: f64,
-	depth_unit_vector: Vec3,
-	width_unit_vector: Vec3,
-	heigth_unit_vector: Vec3,
+	//depth_unit_vector: Vec3,
+	//width_unit_vector: Vec3,
+	//heigth_unit_vector: Vec3,
 }
 
 impl Camera {
@@ -23,8 +23,10 @@ impl Camera {
 	 */
 	pub fn new (heigth: usize, width: usize, fov: f64, origin: Point3) -> Self {
 		let mut camera = Camera { ray: Vec::with_capacity(width * heigth), origin, heigth, width, fov,
-			depth_unit_vector: Vec3::new(1.0, 0.0, 0.0), width_unit_vector: Vec3::new(0.0, 0.0, 1.0),
-			heigth_unit_vector: Vec3::new(0.0, 1.0, 0.0), depth: (width as f64 / 2.0) / (fov.to_radians() / 2.0).tan() };
+			depth: (width as f64 / 2.0) / (fov.to_radians() / 2.0).tan(), };
+			//depth_unit_vector: Vec3::new(1.0, 0.0, 0.0),
+			//width_unit_vector: Vec3::new(0.0, 0.0, 1.0),
+			//heigth_unit_vector: Vec3::new(0.0, 1.0, 0.0) };
 		camera.update_ray();
 		camera
 	}
