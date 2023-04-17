@@ -29,6 +29,7 @@ fn main() {
     let mut window_size = (IMAGE_WIDTH, IMAGE_HEIGHT);
     let event_loop = EventLoop::new();
     let window = WindowBuilder::new()
+
         .with_title("RT")
         .with_inner_size(PhysicalSize::new(window_size.0 as u32, window_size.1 as u32))
         .build(&event_loop).unwrap();

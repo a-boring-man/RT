@@ -1,3 +1,5 @@
+// dependency
+use std::ops;
 
 #[derive(Clone, Default, Debug, PartialEq)]
 pub struct Matrix<T: Copy + Default> {
@@ -7,14 +9,15 @@ pub struct Matrix<T: Copy + Default> {
     nbr_elm: u16,
 }
 
+#[allow(dead_code)]
 impl<T: Copy + Default> Matrix<T> {
 
     pub fn default() -> Self {
         Matrix {
-            data: Vec::with_capacity(16),
-            nbr_col: Default::default(),
-            nbr_row: Default::default(),
-            nbr_elm: Default::default(),
+            data: vec![T::default(); 16],
+            nbr_col: 4,
+            nbr_row: 4,
+            nbr_elm: 16,
         }
     }
 
@@ -47,6 +50,10 @@ impl<T: Copy + Default> Matrix<T> {
         self.data[Matrix::<T>::linear_index_conversion(col, row) as usize]
     }
 
+    pub fn get_elm_linear(&self, index: u16) -> T {
+        self.data[index as usize]
+    }
+
     pub fn set_elm(&mut self, row: u8, col: u8, elm: T) {
         self.data[Matrix::<T>::linear_index_conversion(col, row) as usize] = elm;
     }
@@ -65,6 +72,21 @@ impl<T: Copy + Default> Matrix<T> {
 
 }
 
+impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<&Matrix<T>> for Matrix<T> {
+    type Output = Self;
+
+    fn add(self, rhs: &Matrix<T>) -> Self::Output {
+        let nbr_row = self.get_nbr_row();
+        let nbr_col = self.get_nbr_col();
+        let nbr_elm = nbr_col as u16 * nbr_col as u16;
+        let mut tmp_data = vec![T::default(); nbr_elm as usize];
+        for i in 0..nbr_elm {
+            tmp_data.push(self.get_elm_linear(i) + rhs.get_elm_linear(i));
+        }
+        Matrix::new_filled(nbr_col, nbr_row, tmp_data)
+    }
+}
+
 #[cfg(test)]
 mod test {
 
@@ -77,5 +99,31 @@ mod test {
         let data = vec![Vec3::new(0.0, 0.0, 0.0);16];
         let m2 = Matrix {data, nbr_col: 4, nbr_row: 4, nbr_elm: 16};
         assert_eq!(m1, m2);
+    }
+
+    #[test]
+    fn test_new() {
+        let data_ref = vec![0.0; 9];
+        let mref = Matrix {data: data_ref, nbr_col: 3, nbr_row: 3, nbr_elm: 9};
+        let data_ref2 = vec![Vec3::new(0.0, 0.0, 0.0); 16];
+        let mref2 = Matrix {data: data_ref2, nbr_col: 4, nbr_row: 4, nbr_elm: 16};
+        let m1 = Matrix::new(3, 3);
+        let m2 = Matrix::new(4, 4);
+        assert_eq!(m1, mref);
+        assert_eq!(m2, mref2);
+    }
+
+    #[test]
+    fn test_new_filled() {
+        let data1 = vec![Vec3::new(0.0, 0.0, 0.0); 16];
+        let data2 = vec![0.0; 9];
+        assert_eq!(Matrix::new_filled(4, 4, data1), Matrix::new(4, 4));
+        assert_eq!(Matrix::new_filled(3, 3, data2), Matrix::new(3, 3));
+    }
+
+    #[test]
+    fn test_add_operator1() {
+        let m1 = Matrix::<f64>::new(4, 4);
+        let data = vec![4.0]
     }
 }
