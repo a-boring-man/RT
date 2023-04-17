@@ -1,5 +1,5 @@
 
-#[derive(Clone, Default, Debug)]
+#[derive(Clone, Default, Debug, PartialEq)]
 pub struct Matrix<T: Copy + Default> {
     data: Vec<T>,
     nbr_row: u8,
@@ -63,4 +63,19 @@ impl<T: Copy + Default> Matrix<T> {
         col as u16 * row as u16 + col as u16
     }
 
+}
+
+#[cfg(test)]
+mod test {
+
+    use super::*;
+    use crate::vec3::Vec3;
+
+    #[test]
+    fn test_default() {
+        let m1 = Matrix::default();
+        let data = vec![Vec3::new(0.0, 0.0, 0.0);16];
+        let m2 = Matrix {data, nbr_col: 4, nbr_row: 4, nbr_elm: 16};
+        assert_eq!(m1, m2);
+    }
 }

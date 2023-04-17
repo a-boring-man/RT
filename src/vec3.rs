@@ -1,7 +1,7 @@
 // dependency
 use std::ops; // use to implemente operator overload
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, Default, PartialEq)]
 pub struct Vec3 {
     p: [f64; 3],
 }
