@@ -79,7 +79,7 @@ impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<&Matrix<T>> for Mat
         let nbr_row = self.get_nbr_row();
         let nbr_col = self.get_nbr_col();
         let nbr_elm = nbr_col as u16 * nbr_col as u16;
-        let mut tmp_data = vec![T::default(); nbr_elm as usize];
+        let mut tmp_data = Vec::with_capacity(16);
         for i in 0..nbr_elm {
             tmp_data.push(self.get_elm_linear(i) + rhs.get_elm_linear(i));
         }
@@ -124,6 +124,8 @@ mod test {
     #[test]
     fn test_add_operator1() {
         let m1 = Matrix::<f64>::new(4, 4);
-        let data = vec![4.0]
+        let data = vec![4.0; 16];
+        let res = Matrix::new_filled(4, 4, data);
+        assert_eq!(res, m1 + &res);
     }
 }
