@@ -66,6 +66,10 @@ impl<T: Copy + Default> Matrix<T> {
         self.nbr_col
     }
 
+    pub fn get_nbr_elm(&self) -> u8 {
+        self.nbr_elm
+    }
+
     pub fn linear_index_conversion(col: u8, row: u8) -> u16 {
         col as u16 * row as u16 + col as u16
     }
@@ -78,7 +82,7 @@ impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<&Matrix<T>> for Mat
     fn add(self, rhs: &Matrix<T>) -> Self::Output {
         let nbr_row = self.get_nbr_row();
         let nbr_col = self.get_nbr_col();
-        let nbr_elm = nbr_col as u16 * nbr_col as u16;
+        let nbr_elm = self.get_nbr_elm();
         let mut tmp_data = Vec::with_capacity(16);
         for i in 0..nbr_elm {
             tmp_data.push(self.get_elm_linear(i) + rhs.get_elm_linear(i));
@@ -121,14 +125,24 @@ impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<Matrix<T>> for Matr
     type Output = Matrix<T>;
 
     fn add(self, rhs: Matrix<T>) -> Self::Output {
-        let nbr_row = self.get_nbr_row();
-        let nbr_col = self.get_nbr_col();
         let nbr_elm = nbr_col as u16 * nbr_col as u16;
         let mut tmp_data = Vec::with_capacity(16);
         for i in 0..nbr_elm {
             tmp_data.push(self.get_elm_linear(i) + rhs.get_elm_linear(i));
         }
-        Matrix::new_filled(nbr_col, nbr_row, tmp_data)
+        Matrix::new_filled(self.get_nbr_col(), self.get_nbr_row(), tmp_data)
+    }
+}
+
+impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<T> for Matrix<T> {
+    type Output = Matrix<T>;
+
+    fn add(self, rhs: T) -> self::Output {
+        let mut tmp_data = Vec::with_capacity(16);
+        for i in 0..self.get_nbr_elm() {
+            tmp_data.push(self.get_elm_linear(i) + rhs);
+        }
+        Matrix::new_filled(self.get_nbr_col(), self.get_nbr_row(), tmp_data)
     }
 }
 
