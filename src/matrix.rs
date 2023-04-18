@@ -87,6 +87,52 @@ impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<&Matrix<T>> for Mat
     }
 }
 
+impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<Matrix<T>> for Matrix<T> {
+    type Output = Self;
+
+    fn add(self, rhs: Matrix<T>) -> Self::Output {
+        let nbr_row = self.get_nbr_row();
+        let nbr_col = self.get_nbr_col();
+        let nbr_elm = nbr_col as u16 * nbr_col as u16;
+        let mut tmp_data = Vec::with_capacity(16);
+        for i in 0..nbr_elm {
+            tmp_data.push(self.get_elm_linear(i) + rhs.get_elm_linear(i));
+        }
+        Matrix::new_filled(nbr_col, nbr_row, tmp_data)
+    }
+}
+
+impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<Matrix<T>> for &Matrix<T> {
+    type Output = Matrix<T>;
+
+    fn add(self, rhs: Matrix<T>) -> Self::Output {
+        let nbr_row = self.get_nbr_row();
+        let nbr_col = self.get_nbr_col();
+        let nbr_elm = nbr_col as u16 * nbr_col as u16;
+        let mut tmp_data = Vec::with_capacity(16);
+        for i in 0..nbr_elm {
+            tmp_data.push(self.get_elm_linear(i) + rhs.get_elm_linear(i));
+        }
+        Matrix::new_filled(nbr_col, nbr_row, tmp_data)
+    }
+}
+
+impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<Matrix<T>> for Matrix<T> {
+    type Output = Matrix<T>;
+
+    fn add(self, rhs: Matrix<T>) -> Self::Output {
+        let nbr_row = self.get_nbr_row();
+        let nbr_col = self.get_nbr_col();
+        let nbr_elm = nbr_col as u16 * nbr_col as u16;
+        let mut tmp_data = Vec::with_capacity(16);
+        for i in 0..nbr_elm {
+            tmp_data.push(self.get_elm_linear(i) + rhs.get_elm_linear(i));
+        }
+        Matrix::new_filled(nbr_col, nbr_row, tmp_data)
+    }
+}
+
+
 #[cfg(test)]
 mod test {
 
@@ -127,5 +173,29 @@ mod test {
         let data = vec![4.0; 16];
         let res = Matrix::new_filled(4, 4, data);
         assert_eq!(res, m1 + &res);
+    }
+
+    #[test]
+    fn test_add_operator2() {
+        let m1 = Matrix::<f64>::new(4, 4);
+        let data3 = vec![1.0; 16];
+        let res3 = Matrix::new_filled(4, 4, data3);
+        let data = vec![4.0; 16];
+        let res = Matrix::new_filled(4, 4, data);
+        let data2 = vec![5.0; 16];
+        let res2 = Matrix::new_filled(4, 4, data2);
+        assert_eq!(res2, res3 + res + m1);
+    }
+
+    #[test]
+    fn test_add_operator3() {
+        let m1 = Matrix::<f64>::new(4, 4);
+        let data3 = vec![1.0; 16];
+        let res3 = Matrix::new_filled(4, 4, data3);
+        let data = vec![4.0; 16];
+        let res = Matrix::new_filled(4, 4, data);
+        let data2 = vec![5.0; 16];
+        let res2 = Matrix::new_filled(4, 4, data2);
+        assert_eq!(res2, &res3 + res + &m1);
     }
 }
