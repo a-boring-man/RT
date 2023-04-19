@@ -218,4 +218,16 @@ mod test {
         let res2 = Matrix::new_filled(4, 4, data2);
         assert_eq!(res2, &res3 + &res + &m1);
     }
+
+    #[test]
+    fn test_add_operator() {
+        let T: f64 = 1.0;
+        let data3 = vec![1.0; 16];
+        let res3 = Matrix::new_filled(4, 4, data3);
+        let data = vec![4.0; 16];
+        let res = Matrix::new_filled(4, 4, data);
+        let data2 = vec![5.0; 16];
+        let res2 = Matrix::new_filled(4, 4, data2);
+        assert_eq!(res2, &res3 + &res + &m1);
+    }
 }
