@@ -164,7 +164,7 @@ impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<&T> for Matrix<T> {
     }
 }
 
-impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<&T> for Matrix<T> {
+impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<&T> for &Matrix<T> {
     type Output = Matrix<T>;
 
     fn add(self, rhs: &T) -> Self::Output {
@@ -175,6 +175,7 @@ impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<&T> for Matrix<T> {
         Matrix::new_filled(self.get_nbr_col(), self.get_nbr_row(), tmp_data)
     }
 }
+
 
 
 #[cfg(test)]
@@ -283,5 +284,15 @@ mod test {
         let data2 = vec![5.0; 16];
         let res2 = Matrix::new_filled(4, 4, data2);
         assert_eq!(res2, res + &t);
+    }
+
+    #[test]
+    fn test_add_operator8() {
+        let t: f64 = 1.0;
+        let data = vec![4.0; 16];
+        let res = Matrix::new_filled(4, 4, data);
+        let data2 = vec![5.0; 16];
+        let res2 = Matrix::new_filled(4, 4, data2);
+        assert_eq!(res2, &res + &t);
     }
 }
