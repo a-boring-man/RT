@@ -176,7 +176,7 @@ impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<&T> for &Matrix<T> 
     }
 }
 
-impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Mul<Matrix<T>> for &Matrix<T> {
+impl<T: Copy + Default + std::ops::Add<Output = T> + std::ops::Mul<Output = T> + std::ops::AddAssign> ops::Mul<Matrix<T>> for &Matrix<T> {
     type Output = Matrix<T>;
 
     fn mul(self, rhs: Matrix<T>) -> Self::Output {
@@ -188,11 +188,11 @@ impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Mul<Matrix<T>> for &Mat
         if l_col == r_row {
             for lr in 0..l_row {
                 for rc in 0..r_col {
-                    let mut 
+                    let mut tmp_res: T = T::default();
                     for lc in 0..l_col {
                         let lli = lr * lc + lc;
                         let rli = lc * rc + rc;
-
+                        tmp_res += self.get_elm_linear(lli as u16) * rhs.get_elm_linear(rli as u16)
                     }
                 }
             }
