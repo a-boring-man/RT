@@ -176,6 +176,30 @@ impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<&T> for &Matrix<T> 
     }
 }
 
+impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Mul<Matrix<T>> for &Matrix<T> {
+    type Output = Matrix<T>;
+
+    fn mul(self, rhs: Matrix<T>) -> Self::Output {
+        let mut tmp_data = Vec::with_capacity(16);
+        let l_col = self.get_nbr_col();
+        let r_col = rhs.get_nbr_col();
+        let l_row = self.get_nbr_row();
+        let r_row = self.get_nbr_row();
+        if l_col == r_row {
+            for lr in 0..l_row {
+                for rc in 0..r_col {
+                    let mut 
+                    for lc in 0..l_col {
+                        let lli = lr * lc + lc;
+                        let rli = lc * rc + rc;
+
+                    }
+                }
+            }
+        }
+        Matrix::new_filled(self.get_nbr_col(), self.get_nbr_row(), tmp_data)
+    }
+}
 
 
 #[cfg(test)]
