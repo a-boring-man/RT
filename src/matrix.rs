@@ -176,7 +176,7 @@ impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<&T> for &Matrix<T> 
     }
 }
 
-impl<T: Copy + Default + std::ops::Add<Output = T> + std::ops::Mul<Output = T> + std::ops::AddAssign> ops::Mul<Matrix<T>> for &Matrix<T> {
+impl<T: Copy + Default + std::ops::Add<Output = T> + std::ops::Mul<Output = T> + std::ops::AddAssign> ops::Mul<Matrix<T>> for Matrix<T> {
     type Output = Matrix<T>;
 
     fn mul(self, rhs: Matrix<T>) -> Self::Output {
@@ -194,6 +194,7 @@ impl<T: Copy + Default + std::ops::Add<Output = T> + std::ops::Mul<Output = T> +
                         let rli = lc * rc + rc;
                         tmp_res += self.get_elm_linear(lli as u16) * rhs.get_elm_linear(rli as u16)
                     }
+                    tmp_data.push(tmp_res);
                 }
             }
         }
@@ -318,5 +319,21 @@ mod test {
         let data2 = vec![5.0; 16];
         let res2 = Matrix::new_filled(4, 4, data2);
         assert_eq!(res2, &res + &t);
+    }
+
+    #[test]
+    fn test_mul_operator1() {
+        let t: f64 = 1.0;
+        let mut data = Vec::with_capacity(4);
+        data.push(1.0);
+        data.push(0.0);
+        data.push(0.0);
+        data.push(1.0);
+        let res = Matrix::new_filled(2, 2, data);
+        let data2 = vec![5.0; 6];
+        let res2 = Matrix::new_filled(3, 2, data2);
+        let data3 = vec![5.0; 4];
+        let res3 = Matrix::new_filled(2, 2, data3);
+        assert_eq!(res3, res * res2);
     }
 }
