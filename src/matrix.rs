@@ -1,5 +1,5 @@
 // dependency
-use std::ops;
+use std::{ops, fmt::Debug};
 
 #[derive(Clone, Default, Debug, PartialEq)]
 pub struct Matrix<T: Copy + Default> {
@@ -36,6 +36,7 @@ impl<T: Copy + Default> Matrix<T> {
      */
     pub fn new_filled(nbr_col: u8, nbr_row: u8, data: Vec<T>) -> Self {
         let nbr_elm: u16 = nbr_col as u16 * nbr_row as u16;
+        //data.truncate(nbr_elm as usize);
         if nbr_elm as usize != data.len() {
             return Matrix::new(nbr_col, nbr_row);
         }
@@ -176,15 +177,15 @@ impl<T: Copy + Default + std::ops::Add<Output = T>> ops::Add<&T> for &Matrix<T> 
     }
 }
 
-impl<T: Copy + Default + std::ops::Add<Output = T> + std::ops::Mul<Output = T> + std::ops::AddAssign> ops::Mul<Matrix<T>> for Matrix<T> {
+impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::ops::Mul<Output = T> + std::ops::AddAssign> ops::Mul<Matrix<T>> for Matrix<T> {
     type Output = Matrix<T>;
 
     fn mul(self, rhs: Matrix<T>) -> Self::Output {
-        let mut tmp_data = Vec::with_capacity(16);
         let l_col = self.get_nbr_col();
-        let r_col = rhs.get_nbr_col();
         let l_row = self.get_nbr_row();
-        let r_row = self.get_nbr_row();
+        let r_col = rhs.get_nbr_col();
+        let r_row = rhs.get_nbr_row();
+        let mut tmp_data = Vec::with_capacity(l_row as usize * r_col as usize);
         if l_col == r_row {
             for lr in 0..l_row {
                 for rc in 0..r_col {
@@ -192,13 +193,17 @@ impl<T: Copy + Default + std::ops::Add<Output = T> + std::ops::Mul<Output = T> +
                     for lc in 0..l_col {
                         let lli = lr * lc + lc;
                         let rli = lc * rc + rc;
-                        tmp_res += self.get_elm_linear(lli as u16) * rhs.get_elm_linear(rli as u16)
+                        tmp_res += self.get_elm_linear(lli as u16) * rhs.get_elm_linear(rli as u16);
+                        eprintln!("{:?}", tmp_res);
                     }
                     tmp_data.push(tmp_res);
+                    eprintln!("{:?}", tmp_data);
                 }
             }
         }
-        Matrix::new_filled(self.get_nbr_col(), self.get_nbr_row(), tmp_data)
+        let m = Matrix::new_filled(self.get_nbr_col(), self.get_nbr_row(), tmp_data);
+        eprintln!("{:?}", m);
+        return m;
     }
 }
 
@@ -323,15 +328,14 @@ mod test {
 
     #[test]
     fn test_mul_operator1() {
-        let t: f64 = 1.0;
         let mut data = Vec::with_capacity(4);
         data.push(1.0);
         data.push(0.0);
         data.push(0.0);
         data.push(1.0);
         let res = Matrix::new_filled(2, 2, data);
-        let data2 = vec![5.0; 6];
-        let res2 = Matrix::new_filled(3, 2, data2);
+        let data2 = vec![5.0; 4];
+        let res2 = Matrix::new_filled(2, 2, data2);
         let data3 = vec![5.0; 4];
         let res3 = Matrix::new_filled(2, 2, data3);
         assert_eq!(res3, res * res2);
