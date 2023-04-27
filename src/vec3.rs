@@ -3,7 +3,7 @@ use std::ops; // use to implemente operator overload
 
 #[derive(Copy, Clone, Debug, Default, PartialEq)]
 pub struct Vec3 {
-    p: [f64; 3],
+    pub p: [f64; 3],
 }
 
 /**
