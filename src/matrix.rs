@@ -305,9 +305,9 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::convert::From<
     fn mul(self, rhs: Vec3) -> Self::Output {
         let l_col = self.get_nbr_col();
         let l_row = self.get_nbr_row();
-        let r_col = 1;
+        //let r_col = 1;
         let r_row = 3;
-        let mut tmp_data = Vec::with_capacity(l_row as usize * r_col as usize);
+        let mut tmp_data = Vec::with_capacity(3);
         if l_col == r_row {
             for lr in 0..l_row {
                 let mut tmp_res: T = T::default();
@@ -580,7 +580,7 @@ mod test {
         data.push(0.0);
         data.push(0.0);
         data.push(1.0);
-        let res = Matrix::new_filled(2, 2, data);
+        let res = Matrix::new_filled(3, 3, data);
         let vec1 = Vec3::new(4.0, 5.0, 2.0);
         let vec2 = Vec3::new(4.0, 5.0, 2.0);
         assert_eq!(vec2, res * vec1);
@@ -597,7 +597,7 @@ mod test {
         data.push(0.0);
         data.push(0.0);
         data.push(1.0);
-        let res = Matrix::new_filled(2, 2, data);
+        let res = Matrix::new_filled(3, 3, data);
         let vec1 = Vec3::new(4.0, 5.0, 2.0);
         let vec2 = Vec3::new(4.0, 5.0, 2.0);
         assert_eq!(vec2, &res * vec1);
@@ -614,7 +614,7 @@ mod test {
         data.push(0.0);
         data.push(0.0);
         data.push(1.0);
-        let res = Matrix::new_filled(2, 2, data);
+        let res = Matrix::new_filled(3, 3, data);
         let vec1 = Vec3::new(4.0, 5.0, 2.0);
         let vec2 = Vec3::new(4.0, 5.0, 2.0);
         assert_eq!(vec2, res * &vec1);
@@ -631,7 +631,7 @@ mod test {
         data.push(0.0);
         data.push(0.0);
         data.push(1.0);
-        let res = Matrix::new_filled(2, 2, data);
+        let res = Matrix::new_filled(3, 3, data);
         let vec1 = Vec3::new(4.0, 5.0, 2.0);
         let vec2 = Vec3::new(4.0, 5.0, 2.0);
         assert_eq!(vec2, &res * &vec1);
