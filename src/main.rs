@@ -66,7 +66,9 @@ fn main() {
                     WindowEvent::CloseRequested => {
                         control_flow.set_exit();
                     },
-                    WindowEvent::Resized(physical_size) => { // if window is resize
+                    WindowEvent::Resized(mut physical_size) => { // if window is resize
+                        if physical_size.height as usize <= 0 {
+                            physical_size.height = 1;}
                         window_size = (physical_size.width as usize, physical_size.height as usize); // new size
                         camera.update_size(window_size.1, window_size.0, camera.fov()); // update the camera class and all the ray
                         buffer.resize(window_size.0 * window_size.1, backgroun_color.into_color()); // resize the buffer
