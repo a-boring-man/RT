@@ -11,6 +11,42 @@ pub struct Matrix<T: Copy + Default> {
     nbr_elm: u16,
 }
 
+impl Matrix<f32> {
+    pub fn new_identity(nbr_col: u8, nbr_row: u8) -> Self {
+        let nbr_elm = nbr_col as u16 * nbr_row as u16;
+        let mut data = Vec::with_capacity(nbr_elm as usize);
+        for nr in 0..nbr_row {
+            for nc in 0..nbr_col{
+                if nr == nc {
+                    data.push(1.0);
+                }
+                else {
+                    data.push(0.0);
+                }
+            }
+        }
+        Matrix { data, nbr_row, nbr_col, nbr_elm }
+    }
+}
+
+impl Matrix<f64> {
+    pub fn new_identity(nbr_col: u8, nbr_row: u8) -> Self {
+        let nbr_elm = nbr_col as u16 * nbr_row as u16;
+        let mut data = Vec::with_capacity(nbr_elm as usize);
+        for nr in 0..nbr_row {
+            for nc in 0..nbr_col{
+                if nr == nc {
+                    data.push(1.0);
+                }
+                else {
+                    data.push(0.0);
+                }
+            }
+        }
+        Matrix { data, nbr_row, nbr_col, nbr_elm }
+    }
+}
+
 #[allow(dead_code)]
 impl<T: Copy + Default> Matrix<T> {
 
