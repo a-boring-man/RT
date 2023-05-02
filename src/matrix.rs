@@ -193,8 +193,8 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::ops::Mul<Outpu
                 for rc in 0..r_col {
                     let mut tmp_res: T = T::default();
                     for lc in 0..l_col {
-                        let lli = lr * lc + lc;
-                        let rli = lc * rc + rc;
+                        let lli = lr * l_col + lc;
+                        let rli = lc * r_col + rc;
                         tmp_res += self.get_elm_linear(lli as u16) * rhs.get_elm_linear(rli as u16);
                         eprintln!("{:?}", tmp_res);
                     }
@@ -223,8 +223,8 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::ops::Mul<Outpu
                 for rc in 0..r_col {
                     let mut tmp_res: T = T::default();
                     for lc in 0..l_col {
-                        let lli = lr * lc + lc;
-                        let rli = lc * rc + rc;
+                        let lli = lr * l_col + lc;
+                        let rli = lc * r_col + rc;
                         tmp_res += self.get_elm_linear(lli as u16) * rhs.get_elm_linear(rli as u16);
                         eprintln!("{:?}", tmp_res);
                     }
@@ -253,8 +253,8 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::ops::Mul<Outpu
                 for rc in 0..r_col {
                     let mut tmp_res: T = T::default();
                     for lc in 0..l_col {
-                        let lli = lr * lc + lc;
-                        let rli = lc * rc + rc;
+                        let lli = lr * l_col + lc;
+                        let rli = lc * r_col + rc;
                         tmp_res += self.get_elm_linear(lli as u16) * rhs.get_elm_linear(rli as u16);
                         eprintln!("{:?}", tmp_res);
                     }
@@ -283,8 +283,8 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::ops::Mul<Outpu
                 for rc in 0..r_col {
                     let mut tmp_res: T = T::default();
                     for lc in 0..l_col {
-                        let lli = lr * lc + lc;
-                        let rli = lc * rc + rc;
+                        let lli = lr * l_col + lc;
+                        let rli = lc * r_col + rc;
                         tmp_res += self.get_elm_linear(lli as u16) * rhs.get_elm_linear(rli as u16);
                         eprintln!("{:?}", tmp_res);
                     }
@@ -305,14 +305,14 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::convert::From<
     fn mul(self, rhs: Vec3) -> Self::Output {
         let l_col = self.get_nbr_col();
         let l_row = self.get_nbr_row();
-        //let r_col = 1;
         let r_row = 3;
         let mut tmp_data = Vec::with_capacity(3);
         if l_col == r_row {
             for lr in 0..l_row {
                 let mut tmp_res: T = T::default();
                 for lc in 0..l_col {
-                    let lli = lr * lc + lc;
+                    let lli = lr * l_col + lc;
+                    eprintln!("multipliyin matrix : {:?} with vec {}, linear index : {}", self.get_elm_linear(lli as u16), rhs.p[lc as usize], lli);
                     tmp_res += self.get_elm_linear(lli as u16) * rhs.p[lc as usize];
                     eprintln!("{:?}", tmp_res);
                 }
@@ -339,7 +339,7 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::convert::From<
             for lr in 0..l_row {
                 let mut tmp_res: T = T::default();
                 for lc in 0..l_col {
-                    let lli = lr * lc + lc;
+                    let lli = lr * l_col + lc;
                     tmp_res += self.get_elm_linear(lli as u16) * rhs.p[lc as usize];
                     eprintln!("{:?}", tmp_res);
                 }
@@ -366,7 +366,7 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::convert::From<
             for lr in 0..l_row {
                 let mut tmp_res: T = T::default();
                 for lc in 0..l_col {
-                    let lli = lr * lc + lc;
+                    let lli = lr * l_col + lc;
                     tmp_res += self.get_elm_linear(lli as u16) * rhs.p[lc as usize];
                     eprintln!("{:?}", tmp_res);
                 }
@@ -393,7 +393,7 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::convert::From<
             for lr in 0..l_row {
                 let mut tmp_res: T = T::default();
                 for lc in 0..l_col {
-                    let lli = lr * lc + lc;
+                    let lli = lr * l_col + lc;
                     tmp_res += self.get_elm_linear(lli as u16) * rhs.p[lc as usize];
                     eprintln!("{:?}", tmp_res);
                 }
