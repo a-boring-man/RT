@@ -74,6 +74,12 @@ fn main() {
                         buffer.resize(window_size.0 * window_size.1, backgroun_color.into_color()); // resize the buffer
                     }
                     WindowEvent::KeyboardInput { device_id, input, is_synthetic } => {
+                        match input.scancode {
+                            1 => {
+                                control_flow.set_exit();
+                            }
+                            _ => {}
+                        }
                         println!("key pressed : {}", input.scancode);
                     }
                     _ => {},
