@@ -1,6 +1,6 @@
 #![allow(non_snake_case)]
 use winit::event_loop::EventLoop; // create the nessessary context to create a windows
-use winit::window::{WindowBuilder, self}; // creater of windows
+use winit::window::{WindowBuilder}; // creater of windows
 use winit::dpi::PhysicalSize; // use to define the size of the window at its creation
 use winit::event::{Event, WindowEvent}; // capture event and window event like key press or resize respectivly
 use rayon::prelude::*; // use for multithreading
@@ -9,10 +9,12 @@ mod vec3;
 mod camera;
 mod color;
 mod matrix;
+mod keynput;
 
 use crate::vec3::Vec3; // my vec3 class use for geometry arithmetic
 use crate::color::{background_color}; // the background debug color function
 use crate::camera::Camera; // the camera class
+use crate::keynput::handle_keypress;
 
 // global constante
 const IMAGE_WIDTH: usize = 850;
@@ -43,7 +45,7 @@ fn main() {
     event_loop.run(move |event, _, control_flow| {
         control_flow.set_poll(); // use set_wait
         match event { // in case of an event do the following
-            Event::RedrawRequested(window) => { // redraw if window has changed or if requested
+            Event::RedrawRequested(_window) => { // redraw if window has changed or if requested
                 let t = std::time::Instant::now(); // use for performance measuring
                 let len = buffer.len();
                 let thread_count: usize = std::thread::available_parallelism().unwrap().into(); // use to know the number of thread
@@ -73,12 +75,10 @@ fn main() {
                         camera.update_size(window_size.1, window_size.0, camera.fov()); // update the camera class and all the ray
                         buffer.resize(window_size.0 * window_size.1, backgroun_color.into_color()); // resize the buffer
                     }
-                    WindowEvent::KeyboardInput { device_id, input, is_synthetic } => {
+                    WindowEvent::KeyboardInput { device_id:_, input, is_synthetic:_ } => {
                         match input.scancode {
-                            1 => {
-                                control_flow.set_exit();
-                            }
-                            _ => {}
+                            1 => {control_flow.set_exit();}
+                            _ => {handle_keypress(input);}
                         }
                         println!("key pressed : {}", input.scancode);
                     }

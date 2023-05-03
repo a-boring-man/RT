@@ -27,6 +27,7 @@ impl Matrix<f32> {
         }
         Matrix { data, nbr_row, nbr_col, nbr_elm }
     }
+
 }
 
 impl Matrix<f64> {
