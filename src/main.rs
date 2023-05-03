@@ -1,6 +1,6 @@
 #![allow(non_snake_case)]
 use winit::event_loop::EventLoop; // create the nessessary context to create a windows
-use winit::window::WindowBuilder; // creater of windows
+use winit::window::{WindowBuilder, self}; // creater of windows
 use winit::dpi::PhysicalSize; // use to define the size of the window at its creation
 use winit::event::{Event, WindowEvent}; // capture event and window event like key press or resize respectivly
 use rayon::prelude::*; // use for multithreading
@@ -43,7 +43,7 @@ fn main() {
     event_loop.run(move |event, _, control_flow| {
         control_flow.set_poll(); // use set_wait
         match event { // in case of an event do the following
-            Event::MainEventsCleared => { // after all the event have been handle do this (use to run the loop indefinitly in case of no event)
+            Event::RedrawRequested(window) => { // redraw if window has changed or if requested
                 let t = std::time::Instant::now(); // use for performance measuring
                 let len = buffer.len();
                 let thread_count: usize = std::thread::available_parallelism().unwrap().into(); // use to know the number of thread
@@ -72,6 +72,9 @@ fn main() {
                         window_size = (physical_size.width as usize, physical_size.height as usize); // new size
                         camera.update_size(window_size.1, window_size.0, camera.fov()); // update the camera class and all the ray
                         buffer.resize(window_size.0 * window_size.1, backgroun_color.into_color()); // resize the buffer
+                    }
+                    WindowEvent::KeyboardInput { device_id, input, is_synthetic } => {
+                        println!("key pressed : {}", input.scancode);
                     }
                     _ => {},
                 }
