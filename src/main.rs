@@ -78,7 +78,7 @@ fn main() {
                     WindowEvent::KeyboardInput { device_id:_, input, is_synthetic:_ } => {
                         match input.scancode {
                             1 => {control_flow.set_exit();}
-                            _ => {handle_keypress(input);}
+                            _ => {handle_keypress(input, &camera);}
                         }
                         println!("key pressed : {}", input.scancode);
                     }
