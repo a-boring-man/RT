@@ -128,6 +128,13 @@ impl ops::Add<Vec3> for & Vec3 {
         Vec3 { p: [ self.x() + rhs.x(), self.y() + rhs.y(), self.z() + rhs.z() ] }
     }
 }
+impl ops::Add<f64> for Vec3 {
+    type Output = Vec3;
+
+    fn add(self, rhs: f64) -> Self::Output {
+        Vec3 { p: [ self.x() + rhs, self.y() + rhs, self.z() + rhs ] }
+    }
+}
 
 impl ops::AddAssign<Vec3> for Vec3 {
     fn add_assign(&mut self, rhs: Vec3) {
