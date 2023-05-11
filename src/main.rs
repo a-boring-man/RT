@@ -17,8 +17,8 @@ use crate::camera::Camera; // the camera class
 use crate::keynput::handle_keypress;
 
 // global constante
-const IMAGE_WIDTH: usize = 850;
-const IMAGE_HEIGHT: usize = 600;
+const IMAGE_WIDTH: usize = 550;
+const IMAGE_HEIGHT: usize = 300;
 const FOV: f64 = 145.0;
 
 // aliassing

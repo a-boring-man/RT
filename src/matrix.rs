@@ -28,6 +28,12 @@ impl Matrix<f32> {
         Matrix { data, nbr_row, nbr_col, nbr_elm }
     }
 
+    pub fn new_rot_by_x(nbr_col: u8, nbr_row: u8) -> Self {
+        let nbr_elm = nbr_col as u16 * nbr_row as u16;
+        let mut data = Vec::with_capacity(nbr_elm as usize);
+        data
+    }
+
 }
 
 impl Matrix<f64> {

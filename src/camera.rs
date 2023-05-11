@@ -1,5 +1,6 @@
 // depedency
 use crate::vec3::Vec3;
+use crate::matrix::Matrix;
 
 // aliassing
 type Point3 = Vec3;
@@ -87,4 +88,17 @@ impl Camera {
 	pub fn set_origin(&mut self, new: Vec3) {
 		self.origin = new;
 	}
+
+	pub fn get_rotate_by_up(&mut self, mat: Matrix<T>) {
+		
+	}
+
+	pub fn get_rotate_by_side(&mut self, mat: Matrix<T>) {
+		
+	}
+
+	pub fn get_rotate_by_front(&mut self, mat: Matrix<T>) {
+		
+	}
+
 }
