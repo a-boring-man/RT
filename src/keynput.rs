@@ -11,6 +11,10 @@ pub fn handle_keypress(input: KeyboardInput, camera: &mut Camera) {
 		30 => {move_right(-5.0, camera);}
 		57 => {move_up(5.0, camera);}
 		42 => {move_up(-5.0, camera);}
+		57416 => {camera.add_to_z_angle(5.0);}
+		57424 => {camera.add_to_z_angle(-5.0);}
+		57421 => {camera.add_to_y_angle(-5.0);}
+		57419 => {camera.add_to_y_angle(5.0);}
 		_ => {}
 	}
 	println!("camera origin : {}, {}, {}", camera.get_origin().x(), camera.get_origin().y(), camera.get_origin().z())
