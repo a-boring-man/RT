@@ -15,6 +15,10 @@ pub struct Camera {
 	depth_unit_vector: Vec3,
 	width_unit_vector: Vec3,
 	heigth_unit_vector: Vec3,
+	x_angle: f64,
+	y_angle: f64,
+	z_angle: f64,
+	omnimatrice: Matrix<f64>,
 }
 
 impl Camera {
@@ -27,7 +31,11 @@ impl Camera {
 			depth: (width as f64 / 2.0) / (fov.to_radians() / 2.0).tan(),
 			depth_unit_vector: Vec3::new(1.0, 0.0, 0.0),
 			width_unit_vector: Vec3::new(0.0, 0.0, 1.0),
-			heigth_unit_vector: Vec3::new(0.0, 1.0, 0.0) };
+			heigth_unit_vector: Vec3::new(0.0, 1.0, 0.0),
+			x_angle : 0.0,
+			y_angle : 0.0,
+			z_angle : 0.0,
+			omnimatrice : Matrix::<f64>::new_identity(3, 3) };
 		camera.update_ray();
 		camera
 	}
@@ -89,16 +97,16 @@ impl Camera {
 		self.origin = new;
 	}
 
-	pub fn get_rotate_by_up(&mut self, mat: Matrix<T>) {
-		
+	pub fn add_to_x_angle(&mut self, angle: f64) {
+		self.x_angle += angle;
 	}
 
-	pub fn get_rotate_by_side(&mut self, mat: Matrix<T>) {
-		
+	pub fn add_to_y_angle(&mut self, angle: f64) {
+		self.y_angle += angle;
 	}
 
-	pub fn get_rotate_by_front(&mut self, mat: Matrix<T>) {
-		
+	pub fn add_to_z_angle(&mut self, angle: f64) {
+		self.z_angle += angle;
 	}
 
 }

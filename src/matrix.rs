@@ -1,5 +1,5 @@
 // dependency
-use std::{ops, fmt::Debug};
+use std::{ops, fmt::Debug, f32::consts::PI};
 
 use crate::vec3::Vec3;
 
@@ -28,12 +28,50 @@ impl Matrix<f32> {
         Matrix { data, nbr_row, nbr_col, nbr_elm }
     }
 
-    pub fn new_rot_by_x(nbr_col: u8, nbr_row: u8) -> Self {
-        let nbr_elm = nbr_col as u16 * nbr_row as u16;
-        let mut data = Vec::with_capacity(nbr_elm as usize);
-        data
+    pub fn new_rot_by_x(degre: f32) -> Self {
+        let mut data:Vec<f32> = Vec::with_capacity(9);
+        let in_rad: f32 = (degre / 360.0) * 2.0 * PI as f32;
+        data.push(1.0);
+        data.push(0.0);
+        data.push(0.0);
+        data.push(0.0);
+        data.push(in_rad.cos());
+        data.push(-in_rad.sin());
+        data.push(0.0);
+        data.push(in_rad.cos());
+        data.push(in_rad.sin());
+        Matrix { data, nbr_row: 3, nbr_col: 3, nbr_elm: 9 }
     }
 
+    pub fn new_rot_by_y(degre: f32) -> Self {
+        let mut data:Vec<f32> = Vec::with_capacity(9);
+        let in_rad: f32 = (degre / 360.0) * 2.0 * PI as f32;
+        data.push(in_rad.cos());
+        data.push(0.0);
+        data.push(-in_rad.sin());
+        data.push(0.0);
+        data.push(1.0);
+        data.push(0.0);
+        data.push(in_rad.sin());
+        data.push(0.0);
+        data.push(in_rad.cos());
+        Matrix { data, nbr_row: 3, nbr_col: 3, nbr_elm: 9 }
+    }
+
+    pub fn new_rot_by_z(degre: f32) -> Self {
+        let mut data:Vec<f32> = Vec::with_capacity(9);
+        let in_rad: f32 = (degre / 360.0) * 2.0 * PI as f32;
+        data.push(in_rad.cos());
+        data.push(-in_rad.sin());
+        data.push(0.0);
+        data.push(in_rad.cos());
+        data.push(in_rad.sin());
+        data.push(0.0);
+        data.push(0.0);
+        data.push(0.0);
+        data.push(1.0);
+        Matrix { data, nbr_row: 3, nbr_col: 3, nbr_elm: 9 }
+    }
 }
 
 impl Matrix<f64> {
@@ -51,6 +89,51 @@ impl Matrix<f64> {
             }
         }
         Matrix { data, nbr_row, nbr_col, nbr_elm }
+    }
+
+    pub fn new_rot_by_x(degre: f64) -> Self {
+        let mut data:Vec<f64> = Vec::with_capacity(9);
+        let in_rad: f64 = (degre / 360.0) * 2.0 * PI as f64;
+        data.push(1.0);
+        data.push(0.0);
+        data.push(0.0);
+        data.push(0.0);
+        data.push(in_rad.cos());
+        data.push(-in_rad.sin());
+        data.push(0.0);
+        data.push(in_rad.cos());
+        data.push(in_rad.sin());
+        Matrix { data, nbr_row: 3, nbr_col: 3, nbr_elm: 9 }
+    }
+
+    pub fn new_rot_by_y(degre: f64) -> Self {
+        let mut data:Vec<f64> = Vec::with_capacity(9);
+        let in_rad: f64 = (degre / 360.0) * 2.0 * PI as f64;
+        data.push(in_rad.cos());
+        data.push(0.0);
+        data.push(-in_rad.sin());
+        data.push(0.0);
+        data.push(1.0);
+        data.push(0.0);
+        data.push(in_rad.sin());
+        data.push(0.0);
+        data.push(in_rad.cos());
+        Matrix { data, nbr_row: 3, nbr_col: 3, nbr_elm: 9 }
+    }
+
+    pub fn new_rot_by_z(degre: f64) -> Self {
+        let mut data:Vec<f64> = Vec::with_capacity(9);
+        let in_rad: f64 = (degre / 360.0) * 2.0 * PI as f64;
+        data.push(in_rad.cos());
+        data.push(-in_rad.sin());
+        data.push(0.0);
+        data.push(in_rad.cos());
+        data.push(in_rad.sin());
+        data.push(0.0);
+        data.push(0.0);
+        data.push(0.0);
+        data.push(1.0);
+        Matrix { data, nbr_row: 3, nbr_col: 3, nbr_elm: 9 }
     }
 }
 
