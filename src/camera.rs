@@ -77,10 +77,20 @@ impl Camera {
 	 */
 	pub fn update_ray(&mut self) {
 		self.ray.clear();
-		for h in 0..self.heigth {
-			for w in 0..self.width {
-				//eprintln!("correct {}", (w * h + w) as usize);
-				self.ray.push((Vec3::new(self.depth, ((self.heigth as f64 / 2.0) as f64 - h as f64) as f64, (w as f64 - (self.width / 2) as f64) as f64) - self.origin).normalized());
+		if Matrix::<f64>::new_identity(3, 3) == self.omnimatrice.clone() {
+			for h in 0..self.heigth {
+				for w in 0..self.width {
+					//eprintln!("correct {}", (w * h + w) as usize);
+					self.ray.push((Vec3::new(self.depth, ((self.heigth as f64 / 2.0) as f64 - h as f64) as f64, (w as f64 - (self.width / 2) as f64) as f64) - self.origin).normalized());
+				}
+			}
+		}
+		else {
+			for h in 0..self.heigth {
+				for w in 0..self.width {
+					//eprintln!("correct {}", (w * h + w) as usize);
+					self.ray.push(self.omnimatrice.clone() * (Vec3::new(self.depth, ((self.heigth as f64 / 2.0) as f64 - h as f64) as f64, (w as f64 - (self.width / 2) as f64) as f64) - self.origin).normalized());
+				}
 			}
 		}
 	}
@@ -107,6 +117,26 @@ impl Camera {
 
 	pub fn add_to_z_angle(&mut self, angle: f64) {
 		self.z_angle += angle;
+	}
+
+	pub fn get_x_angle(&self) -> f64 {
+		self.x_angle
+	}
+
+	pub fn get_y_angle(&self) -> f64 {
+		self.y_angle
+	}
+
+	pub fn get_z_angle(&self) -> f64 {
+		self.z_angle
+	}
+
+	pub fn set_omni(&mut self, new: Matrix::<f64>) {
+		self.omnimatrice = self.omnimatrice.clone() * new;
+	}
+
+	pub fn get_omni(&self) -> Matrix<f64> {
+		self.omnimatrice.clone()
 	}
 
 }

@@ -80,6 +80,7 @@ fn main() {
                             1 => {control_flow.set_exit();}
                             _ => {handle_keypress(input, &mut camera);}
                         }
+                        window.request_redraw();
                         println!("key pressed : {}", input.scancode);
                     }
                     _ => {},

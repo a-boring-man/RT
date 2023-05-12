@@ -322,15 +322,15 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::ops::Mul<Outpu
                         let lli = lr * l_col + lc;
                         let rli = lc * r_col + rc;
                         tmp_res += self.get_elm_linear(lli as u16) * rhs.get_elm_linear(rli as u16);
-                        eprintln!("{:?}", tmp_res);
+                        //eprintln!("{:?}", tmp_res);
                     }
                     tmp_data.push(tmp_res);
-                    eprintln!("{:?}", tmp_data);
+                    //eprintln!("{:?}", tmp_data);
                 }
             }
         }
         let m = Matrix::new_filled(self.get_nbr_col(), self.get_nbr_row(), tmp_data);
-        eprintln!("{:?}", m);
+        //eprintln!("{:?}", m);
         return m;
     }
 }
@@ -352,15 +352,15 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::ops::Mul<Outpu
                         let lli = lr * l_col + lc;
                         let rli = lc * r_col + rc;
                         tmp_res += self.get_elm_linear(lli as u16) * rhs.get_elm_linear(rli as u16);
-                        eprintln!("{:?}", tmp_res);
+                        //eprintln!("{:?}", tmp_res);
                     }
                     tmp_data.push(tmp_res);
-                    eprintln!("{:?}", tmp_data);
+                    //eprintln!("{:?}", tmp_data);
                 }
             }
         }
         let m = Matrix::new_filled(self.get_nbr_col(), self.get_nbr_row(), tmp_data);
-        eprintln!("{:?}", m);
+        //eprintln!("{:?}", m);
         return m;
     }
 }
@@ -382,15 +382,15 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::ops::Mul<Outpu
                         let lli = lr * l_col + lc;
                         let rli = lc * r_col + rc;
                         tmp_res += self.get_elm_linear(lli as u16) * rhs.get_elm_linear(rli as u16);
-                        eprintln!("{:?}", tmp_res);
+                        //eprintln!("{:?}", tmp_res);
                     }
                     tmp_data.push(tmp_res);
-                    eprintln!("{:?}", tmp_data);
+                    //eprintln!("{:?}", tmp_data);
                 }
             }
         }
         let m = Matrix::new_filled(self.get_nbr_col(), self.get_nbr_row(), tmp_data);
-        eprintln!("{:?}", m);
+        //eprintln!("{:?}", m);
         return m;
     }
 }
@@ -412,15 +412,15 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::ops::Mul<Outpu
                         let lli = lr * l_col + lc;
                         let rli = lc * r_col + rc;
                         tmp_res += self.get_elm_linear(lli as u16) * rhs.get_elm_linear(rli as u16);
-                        eprintln!("{:?}", tmp_res);
+                        //eprintln!("{:?}", tmp_res);
                     }
                     tmp_data.push(tmp_res);
-                    eprintln!("{:?}", tmp_data);
+                    //eprintln!("{:?}", tmp_data);
                 }
             }
         }
         let m = Matrix::new_filled(self.get_nbr_col(), self.get_nbr_row(), tmp_data);
-        eprintln!("{:?}", m);
+        //eprintln!("{:?}", m);
         return m;
     }
 }
@@ -438,16 +438,16 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::convert::From<
                 let mut tmp_res: T = T::default();
                 for lc in 0..l_col {
                     let lli = lr * l_col + lc;
-                    eprintln!("multipliyin matrix : {:?} with vec {}, linear index : {}", self.get_elm_linear(lli as u16), rhs.p[lc as usize], lli);
+                    ////eprintln!("multipliyin matrix : {:?} with vec {}, linear index : {}", self.get_elm_linear(lli as u16), rhs.p[lc as usize], lli);
                     tmp_res += self.get_elm_linear(lli as u16) * rhs.p[lc as usize];
-                    eprintln!("{:?}", tmp_res);
+                    ////eprintln!("{:?}", tmp_res);
                 }
                 tmp_data.push(tmp_res);
-                eprintln!("{:?}", tmp_data);
+                ////eprintln!("{:?}", tmp_data);
             }
         }
         let v = Vec3::new(f64::from(tmp_data[0]), f64::from(tmp_data[1]), f64::from(tmp_data[2]));
-        eprintln!("{:?}", v);
+        ////eprintln!("{:?}", v);
         return v;
     }
 }
@@ -467,14 +467,14 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::convert::From<
                 for lc in 0..l_col {
                     let lli = lr * l_col + lc;
                     tmp_res += self.get_elm_linear(lli as u16) * rhs.p[lc as usize];
-                    eprintln!("{:?}", tmp_res);
+                    //eprintln!("{:?}", tmp_res);
                 }
                 tmp_data.push(tmp_res);
-                eprintln!("{:?}", tmp_data);
+                //eprintln!("{:?}", tmp_data);
             }
         }
         let v = Vec3::new(f64::from(tmp_data[0]), f64::from(tmp_data[1]), f64::from(tmp_data[2]));
-        eprintln!("{:?}", v);
+        //eprintln!("{:?}", v);
         return v;
     }
 }
@@ -494,14 +494,14 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::convert::From<
                 for lc in 0..l_col {
                     let lli = lr * l_col + lc;
                     tmp_res += self.get_elm_linear(lli as u16) * rhs.p[lc as usize];
-                    eprintln!("{:?}", tmp_res);
+                    //eprintln!("{:?}", tmp_res);
                 }
                 tmp_data.push(tmp_res);
-                eprintln!("{:?}", tmp_data);
+                //eprintln!("{:?}", tmp_data);
             }
         }
         let v = Vec3::new(f64::from(tmp_data[0]), f64::from(tmp_data[1]), f64::from(tmp_data[2]));
-        eprintln!("{:?}", v);
+        //eprintln!("{:?}", v);
         return v;
     }
 }
@@ -521,14 +521,14 @@ impl<T: Copy + Default + Debug + std::ops::Add<Output = T> + std::convert::From<
                 for lc in 0..l_col {
                     let lli = lr * l_col + lc;
                     tmp_res += self.get_elm_linear(lli as u16) * rhs.p[lc as usize];
-                    eprintln!("{:?}", tmp_res);
+                    //eprintln!("{:?}", tmp_res);
                 }
                 tmp_data.push(tmp_res);
-                eprintln!("{:?}", tmp_data);
+                //eprintln!("{:?}", tmp_data);
             }
         }
         let v = Vec3::new(f64::from(tmp_data[0]), f64::from(tmp_data[1]), f64::from(tmp_data[2]));
-        eprintln!("{:?}", v);
+        //eprintln!("{:?}", v);
         return v;
     }
 }
