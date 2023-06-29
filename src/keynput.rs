@@ -17,8 +17,8 @@ pub fn handle_keypress(input: KeyboardInput, camera: &mut Camera) {
 		57424 => {camera.add_to_z_angle(-5.0);}
 		57421 => {camera.add_to_y_angle(-5.0);}
 		57419 => {camera.add_to_y_angle(5.0);}
-		18 => {camera.add_to_y_angle(5.0);}
-		16 => {camera.add_to_y_angle(-5.0);}
+		18 => {camera.add_to_x_angle(5.0);}
+		16 => {camera.add_to_x_angle(-5.0);}
 		_ => {}
 	}
 	if camera.get_x_angle() - 0.0 > 0.0001 || camera.get_x_angle() - 0.0 < -0.0001 {
@@ -26,11 +26,11 @@ pub fn handle_keypress(input: KeyboardInput, camera: &mut Camera) {
 		matrice_has_been_changed = true;
 	}
 	if camera.get_y_angle() - 0.0 > 0.0001 || camera.get_y_angle() - 0.0 < -0.0001 {
-		camera.set_omni(Matrix::<f64>::new_rot_by_x(camera.get_y_angle()));
+		camera.set_omni(Matrix::<f64>::new_rot_by_y(camera.get_y_angle()));
 		matrice_has_been_changed = true;
 	}
 	if camera.get_z_angle() - 0.0 > 0.0001 || camera.get_z_angle() - 0.0 < -0.0001 {
-		camera.set_omni(Matrix::<f64>::new_rot_by_x(camera.get_z_angle()));
+		camera.set_omni(Matrix::<f64>::new_rot_by_y(camera.get_z_angle()));
 		matrice_has_been_changed = true;
 	}
 	if matrice_has_been_changed {

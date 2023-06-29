@@ -89,7 +89,7 @@ impl Camera {
 			for h in 0..self.heigth {
 				for w in 0..self.width {
 					//eprintln!("correct {}", (w * h + w) as usize);
-					self.ray.push(self.omnimatrice.clone() * (Vec3::new(self.depth, ((self.heigth as f64 / 2.0) as f64 - h as f64) as f64, (w as f64 - (self.width / 2) as f64) as f64) - self.origin).normalized());
+					self.ray.push(self.omnimatrice.clone() * ((Vec3::new(self.depth, ((self.heigth as f64 / 2.0) as f64 - h as f64) as f64, (w as f64 - (self.width / 2) as f64) as f64) - self.origin).normalized()));
 				}
 			}
 		}
@@ -109,14 +109,17 @@ impl Camera {
 
 	pub fn add_to_x_angle(&mut self, angle: f64) {
 		self.x_angle += angle;
+		println!("adding to x angle now angle equal {}", self.x_angle);
 	}
 
 	pub fn add_to_y_angle(&mut self, angle: f64) {
 		self.y_angle += angle;
+		println!("adding to y angle now angle equal {}", self.y_angle);
 	}
 
 	pub fn add_to_z_angle(&mut self, angle: f64) {
 		self.z_angle += angle;
+		println!("adding to z angle now angle equal {}", self.z_angle);
 	}
 
 	pub fn get_x_angle(&self) -> f64 {
@@ -133,6 +136,7 @@ impl Camera {
 
 	pub fn set_omni(&mut self, new: Matrix::<f64>) {
 		self.omnimatrice = self.omnimatrice.clone() * new;
+		println!("getting omnimatrice {:?}", self.omnimatrice);
 	}
 
 	pub fn get_omni(&self) -> Matrix<f64> {
