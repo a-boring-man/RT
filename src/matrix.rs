@@ -91,6 +91,20 @@ impl Matrix<f64> {
         Matrix { data, nbr_row, nbr_col, nbr_elm }
     }
 
+    pub fn custom_identity_3(x: f64, y: f64, z: f64) {
+        let mut data:Vec<f64> = Vec::with_capacity(9);
+        data.push(x);
+        data.push(0.0);
+        data.push(0.0);
+        data.push(0.0);
+        data.push(y);
+        data.push(0.0);
+        data.push(0.0);
+        data.push(0.0);
+        data.push(z);
+        Matrix { data, nbr_row: 3, nbr_col: 3, nbr_elm: 9 }
+    }
+
     pub fn new_rot_by_x(degre: f64) -> Self {
         let mut data:Vec<f64> = Vec::with_capacity(9);
         let in_rad: f64 = (degre / 360.0) * 2.0 * PI as f64;

@@ -15,9 +15,6 @@ pub struct Camera {
 	depth_unit_vector: Vec3,
 	width_unit_vector: Vec3,
 	heigth_unit_vector: Vec3,
-	x_angle: f64,
-	y_angle: f64,
-	z_angle: f64,
 	omnimatrice: Matrix<f64>,
 }
 
@@ -32,9 +29,6 @@ impl Camera {
 			depth_unit_vector: Vec3::new(1.0, 0.0, 0.0),
 			width_unit_vector: Vec3::new(0.0, 0.0, 1.0),
 			heigth_unit_vector: Vec3::new(0.0, 1.0, 0.0),
-			x_angle : 0.0,
-			y_angle : 0.0,
-			z_angle : 0.0,
 			omnimatrice : Matrix::<f64>::new_identity(3, 3) };
 		camera.update_ray();
 		camera
@@ -105,33 +99,6 @@ impl Camera {
 
 	pub fn set_origin(&mut self, new: Vec3) {
 		self.origin = new;
-	}
-
-	pub fn add_to_x_angle(&mut self, angle: f64) {
-		self.x_angle += angle;
-		println!("adding to x angle now angle equal {}", self.x_angle);
-	}
-
-	pub fn add_to_y_angle(&mut self, angle: f64) {
-		self.y_angle += angle;
-		println!("adding to y angle now angle equal {}", self.y_angle);
-	}
-
-	pub fn add_to_z_angle(&mut self, angle: f64) {
-		self.z_angle += angle;
-		println!("adding to z angle now angle equal {}", self.z_angle);
-	}
-
-	pub fn get_x_angle(&self) -> f64 {
-		self.x_angle
-	}
-
-	pub fn get_y_angle(&self) -> f64 {
-		self.y_angle
-	}
-
-	pub fn get_z_angle(&self) -> f64 {
-		self.z_angle
 	}
 
 	pub fn set_omni(&mut self, new: Matrix::<f64>) {
