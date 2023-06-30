@@ -20,6 +20,8 @@ use crate::keynput::handle_keypress;
 const IMAGE_WIDTH: usize = 550;
 const IMAGE_HEIGHT: usize = 300;
 const FOV: f64 = 145.0;
+const ROTATION_SPEED: f64 = 5.0;
+const TRANSLATION_SPEED: f64 = 1.0;
 
 // aliassing
 type Color = Vec3;
@@ -40,7 +42,7 @@ fn main() {
     // fill the buffer for the first time with black pixel
     let mut buffer = vec![backgroun_color.into_color(); window_size.0 * window_size.1]; // call the from impl for the type of data in background color
     // then creating the camera and create all of it's vector
-    let mut camera = Camera::new(IMAGE_HEIGHT as usize, IMAGE_WIDTH as usize, FOV, Vec3::new(0.0, 0.0, 0.0));
+    let mut camera = Camera::new(IMAGE_HEIGHT as usize, IMAGE_WIDTH as usize, FOV, Vec3::new(0.0, 0.0, 0.0), ROTATION_SPEED, TRANSLATION_SPEED);
 
     event_loop.run(move |event, _, control_flow| {
         control_flow.set_poll(); // use set_wait

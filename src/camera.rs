@@ -16,6 +16,18 @@ pub struct Camera {
 	width_unit_vector: Vec3,
 	heigth_unit_vector: Vec3,
 	omnimatrice: Matrix<f64>,
+	pub translation_x: Matrix<f64>,
+	pub translation_y: Matrix<f64>,
+	pub translation_z: Matrix<f64>,
+	pub translation_x_neg: Matrix<f64>,
+	pub translation_y_neg: Matrix<f64>,
+	pub translation_z_neg: Matrix<f64>,
+	pub rot_x: Matrix<f64>,
+	pub rot_y: Matrix<f64>,
+	pub rot_z: Matrix<f64>,
+	pub rot_x_neg: Matrix<f64>,
+	pub rot_y_neg: Matrix<f64>,
+	pub rot_z_neg: Matrix<f64>,
 }
 
 impl Camera {
@@ -23,13 +35,25 @@ impl Camera {
 	/**
 	 * create and return a new camera
 	 */
-	pub fn new (heigth: usize, width: usize, fov: f64, origin: Point3) -> Self {
+	pub fn new (heigth: usize, width: usize, fov: f64, origin: Point3, rotate_speed: f64, translation_speed: f64) -> Self {
 		let mut camera = Camera { ray: Vec::with_capacity(width * heigth), origin, heigth, width, fov,
 			depth: (width as f64 / 2.0) / (fov.to_radians() / 2.0).tan(),
 			depth_unit_vector: Vec3::new(1.0, 0.0, 0.0),
 			width_unit_vector: Vec3::new(0.0, 0.0, 1.0),
 			heigth_unit_vector: Vec3::new(0.0, 1.0, 0.0),
-			omnimatrice : Matrix::<f64>::new_identity(3, 3) };
+			omnimatrice : Matrix::<f64>::new_identity(3, 3),
+			translation_x : Matrix::<f64>::custom_identity_3(translation_speed, 0.0, 0.0),
+			translation_y : Matrix::<f64>::custom_identity_3(0.0, translation_speed, 0.0),
+			translation_z : Matrix::<f64>::custom_identity_3(0.0, 0.0, translation_speed),
+			translation_x_neg : Matrix::<f64>::custom_identity_3(-translation_speed, 0.0, 0.0),
+			translation_y_neg : Matrix::<f64>::custom_identity_3(0.0, -translation_speed, 0.0),
+			translation_z_neg : Matrix::<f64>::custom_identity_3(0.0, 0.0, -translation_speed),
+			rot_x : Matrix::<f64>::new_rot_by_x(rotate_speed),
+			rot_y : Matrix::<f64>::new_rot_by_y(rotate_speed),
+			rot_z : Matrix::<f64>::new_rot_by_z(rotate_speed),
+			rot_x_neg : Matrix::<f64>::new_rot_by_x(-rotate_speed),
+			rot_y_neg : Matrix::<f64>::new_rot_by_y(-rotate_speed),
+			rot_z_neg : Matrix::<f64>::new_rot_by_z(-rotate_speed), };
 		camera.update_ray();
 		camera
 	}
@@ -71,6 +95,11 @@ impl Camera {
 	 */
 	pub fn update_ray(&mut self) {
 		self.ray.clear();
+		for h in 0..self.heigth {
+			for w in 0..self.width {
+				self.ray.push((self.depth * self.depth_unit_vector) + (-self.width + (w * 2.0 / self.width))).normalized());
+			}
+		}
 		if Matrix::<f64>::new_identity(3, 3) == self.omnimatrice.clone() {
 			for h in 0..self.heigth {
 				for w in 0..self.width {

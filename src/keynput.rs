@@ -5,50 +5,25 @@ use crate::matrix::Matrix;
 
 pub fn handle_keypress(input: KeyboardInput, camera: &mut Camera) {
 	//println!("key pressed : {}", input.scancode);
-	let mut matrice_has_been_changed = false;
+	let mut work_to_be_done = true;
+	let mut transform_matrice = Matrix::<f64>::new_identity; 
 	match input.scancode {
-		17 => {move_front(5.0, camera);}
-		31 => {move_front(-5.0, camera);}
-		32 => {move_right(5.0, camera);}
-		30 => {move_right(-5.0, camera);}
-		57 => {move_up(5.0, camera);}
-		42 => {move_up(-5.0, camera);}
-		57416 => {camera.add_to_z_angle(5.0);}
-		57424 => {camera.add_to_z_angle(-5.0);}
-		57421 => {camera.add_to_y_angle(-5.0);}
-		57419 => {camera.add_to_y_angle(5.0);}
-		18 => {camera.add_to_x_angle(5.0);}
-		16 => {camera.add_to_x_angle(-5.0);}
-		_ => {}
+		17 => {transform_matrice = camera.translation_x;}
+		31 => {transform_matrice = camera.translation_x_neg;}
+		32 => {transform_matrice = camera.translation_z;}
+		30 => {transform_matrice = camera.translation_z_neg;}
+		57 => {transform_matrice = camera.translation_y;}
+		42 => {transform_matrice = camera.translation_y_neg;}
+		57416 => {camera.rot_z}
+		57424 => {camera.rot_z_neg}
+		57421 => {camera.rot_y_neg}
+		57419 => {camera.rot_y}
+		18 => {camera.rot_x;}
+		16 => {camera.rot_x_neg}
+		_ => {work_to_be_done = false}
 	}
-	if camera.get_x_angle() - 0.0 > 0.0001 || camera.get_x_angle() - 0.0 < -0.0001 {
-		println!("i want to set the omnimatric to : {:?}", Matrix::<f64>::new_rot_by_x(camera.get_x_angle()));
-		camera.set_omni(Matrix::<f64>::new_rot_by_x(camera.get_x_angle()));
-		println!("witch result in omni equal : {:?}", camera.get_omni());
-		matrice_has_been_changed = true;
+	if !work_to_be_done {
+		return;
 	}
-	if camera.get_y_angle() - 0.0 > 0.0001 || camera.get_y_angle() - 0.0 < -0.0001 {
-		camera.set_omni(Matrix::<f64>::new_rot_by_y(camera.get_y_angle()));
-		matrice_has_been_changed = true;
-	}
-	if camera.get_z_angle() - 0.0 > 0.0001 || camera.get_z_angle() - 0.0 < -0.0001 {
-		camera.set_omni(Matrix::<f64>::new_rot_by_y(camera.get_z_angle()));
-		matrice_has_been_changed = true;
-	}
-	if matrice_has_been_changed {
-		//println!("camera omni : {:?}", camera.get_omni());
-		camera.update_ray();
-	}
-}
-
-fn move_front(distance: f64, camera: &mut Camera) {
-	camera.set_origin(camera.get_origin() + distance * camera.get_direction());
-}
-
-fn move_right(distance: f64, camera: &mut Camera) {
-	camera.set_origin(camera.get_origin() + distance * camera.get_width());
-}
-
-fn move_up(distance: f64, camera: &mut Camera) {
-	camera.set_origin(camera.get_origin() + distance * camera.get_heigth());
+	camera.update_ray();
 }
