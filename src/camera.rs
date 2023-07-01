@@ -16,12 +16,12 @@ pub struct Camera {
 	width_unit_vector: Vec3,
 	heigth_unit_vector: Vec3,
 	omnimatrice: Matrix<f64>,
-	pub translation_x: Matrix<f64>,
-	pub translation_y: Matrix<f64>,
-	pub translation_z: Matrix<f64>,
-	pub translation_x_neg: Matrix<f64>,
-	pub translation_y_neg: Matrix<f64>,
-	pub translation_z_neg: Matrix<f64>,
+	pub translation_x: Vec3,
+	pub translation_y: Vec3,
+	pub translation_z: Vec3,
+	pub translation_x_neg: Vec3,
+	pub translation_y_neg: Vec3,
+	pub translation_z_neg: Vec3,
 	pub rot_x: Matrix<f64>,
 	pub rot_y: Matrix<f64>,
 	pub rot_z: Matrix<f64>,
@@ -42,12 +42,12 @@ impl Camera {
 			width_unit_vector: Vec3::new(0.0, 0.0, 1.0),
 			heigth_unit_vector: Vec3::new(0.0, 1.0, 0.0),
 			omnimatrice : Matrix::<f64>::new_identity(3, 3),
-			translation_x : Matrix::<f64>::custom_identity_3(translation_speed, 0.0, 0.0),
-			translation_y : Matrix::<f64>::custom_identity_3(0.0, translation_speed, 0.0),
-			translation_z : Matrix::<f64>::custom_identity_3(0.0, 0.0, translation_speed),
-			translation_x_neg : Matrix::<f64>::custom_identity_3(-translation_speed, 0.0, 0.0),
-			translation_y_neg : Matrix::<f64>::custom_identity_3(0.0, -translation_speed, 0.0),
-			translation_z_neg : Matrix::<f64>::custom_identity_3(0.0, 0.0, -translation_speed),
+			translation_x : Vec3::new(translation_speed, 0.0, 0.0),
+			translation_y : Vec3::new(0.0, translation_speed, 0.0),
+			translation_z : Vec3::new(0.0, 0.0, translation_speed),
+			translation_x_neg : Vec3::new(-translation_speed, 0.0, 0.0),
+			translation_y_neg : Vec3::new(0.0, -translation_speed, 0.0),
+			translation_z_neg : Vec3::new(0.0, 0.0, -translation_speed),
 			rot_x : Matrix::<f64>::new_rot_by_x(rotate_speed),
 			rot_y : Matrix::<f64>::new_rot_by_y(rotate_speed),
 			rot_z : Matrix::<f64>::new_rot_by_z(rotate_speed),
@@ -70,12 +70,24 @@ impl Camera {
 		self.depth_unit_vector
 	}
 
+	pub fn set_direction(&mut self, new: Vec3) {
+		self.depth_unit_vector = new;
+	}
+
 	pub fn get_width(&self) -> Vec3 {
 		self.width_unit_vector
 	}
 
+	pub fn set_width(&mut self, new: Vec3) {
+		self.width_unit_vector = new;
+	}
+
 	pub fn get_heigth(&self) -> Vec3 {
 		self.heigth_unit_vector
+	}
+
+	pub fn set_heigth(&mut self, new: Vec3) {
+		self.heigth_unit_vector = new;
 	}
 
 	/**
