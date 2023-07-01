@@ -6,7 +6,7 @@ use crate::matrix::Matrix;
 type Point3 = Vec3;
 
 pub struct Camera {
-	ray: Vec<Vec3>,
+	pub ray: Vec<Vec3>,
 	origin: Point3,
 	heigth: usize,
 	width: usize,
@@ -97,23 +97,7 @@ impl Camera {
 		self.ray.clear();
 		for h in 0..self.heigth {
 			for w in 0..self.width {
-				self.ray.push((self.depth * self.depth_unit_vector) + (-self.width + (w * 2.0 / self.width))).normalized());
-			}
-		}
-		if Matrix::<f64>::new_identity(3, 3) == self.omnimatrice.clone() {
-			for h in 0..self.heigth {
-				for w in 0..self.width {
-					//eprintln!("correct {}", (w * h + w) as usize);
-					self.ray.push((Vec3::new(self.depth, ((self.heigth as f64 / 2.0) as f64 - h as f64) as f64, (w as f64 - (self.width / 2) as f64) as f64) - self.origin).normalized());
-				}
-			}
-		}
-		else {
-			for h in 0..self.heigth {
-				for w in 0..self.width {
-					//eprintln!("correct {}", (w * h + w) as usize);
-					self.ray.push(self.omnimatrice.clone() * ((Vec3::new(self.depth, ((self.heigth as f64 / 2.0) as f64 - h as f64) as f64, (w as f64 - (self.width / 2) as f64) as f64) - self.origin).normalized()));
-				}
+				self.ray.push(((self.depth * self.depth_unit_vector) + (w as f64 - self.width as f64 / 2.0) * self.width_unit_vector + ((self.heigth as f64 / 2.0) - h as f64) * self.heigth_unit_vector).normalized());
 			}
 		}
 	}

@@ -84,6 +84,7 @@ fn main() {
                         }
                         window.request_redraw();
                         println!("key pressed : {}", input.scancode);
+                        //println!("debug ray : {:?}", camera.ray);
                     }
                     _ => {},
                 }

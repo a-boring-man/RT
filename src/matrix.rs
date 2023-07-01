@@ -91,7 +91,7 @@ impl Matrix<f64> {
         Matrix { data, nbr_row, nbr_col, nbr_elm }
     }
 
-    pub fn custom_identity_3(x: f64, y: f64, z: f64) {
+    pub fn custom_identity_3(x: f64, y: f64, z: f64) -> Self {
         let mut data:Vec<f64> = Vec::with_capacity(9);
         data.push(x);
         data.push(0.0);
