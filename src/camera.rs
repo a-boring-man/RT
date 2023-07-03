@@ -16,6 +16,7 @@ pub struct Camera {
 	width_unit_vector: Vec3,
 	heigth_unit_vector: Vec3,
 	omnimatrice: Matrix<f64>,
+	inverted_omnimatrice: Matrix<f64>,
 	pub translation_x: Vec3,
 	pub translation_y: Vec3,
 	pub translation_z: Vec3,
@@ -42,6 +43,7 @@ impl Camera {
 			width_unit_vector: Vec3::new(0.0, 0.0, 1.0),
 			heigth_unit_vector: Vec3::new(0.0, 1.0, 0.0),
 			omnimatrice : Matrix::<f64>::new_identity(3, 3),
+			inverted_omnimatrice : Matrix::<f64>::new_identity(3, 3),
 			translation_x : Vec3::new(translation_speed, 0.0, 0.0),
 			translation_y : Vec3::new(0.0, translation_speed, 0.0),
 			translation_z : Vec3::new(0.0, 0.0, translation_speed),
@@ -127,11 +129,20 @@ impl Camera {
 	}
 
 	pub fn set_omni(&mut self, new: Matrix::<f64>) {
-		self.omnimatrice = self.omnimatrice.clone() * new;
+		self.omnimatrice = new;
 		println!("getting omnimatrice {:?}", self.omnimatrice);
 	}
 
 	pub fn get_omni(&self) -> Matrix<f64> {
+		self.omnimatrice.clone()
+	}
+
+	pub fn set_inverted_omni(&mut self, new: Matrix::<f64>) {
+		self.inverted_omnimatrice = new;
+		println!("getting inverted omnimatrice {:?}", self.inverted_omnimatrice);
+	}
+
+	pub fn get_inverted_omni(&self) -> Matrix<f64> {
 		self.omnimatrice.clone()
 	}
 
