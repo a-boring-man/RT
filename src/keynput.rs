@@ -36,7 +36,7 @@ pub fn handle_keypress(input: KeyboardInput, camera: &mut Camera) {
 		return;
 	}
 	if translation {
-		println!("work : {:?}", rotation_matrix.clone());
+		//println!("work : {:?}", rotation_matrix.clone());
 		camera.set_origin(camera.get_omni() * translation_vector.clone() + camera.get_origin());
 	}
 	new_omni = camera.get_omni() * rotation_matrix.clone();

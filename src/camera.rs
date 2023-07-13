@@ -130,7 +130,7 @@ impl Camera {
 
 	pub fn set_omni(&mut self, new: Matrix::<f64>) {
 		self.omnimatrice = new;
-		println!("getting omnimatrice {:?}", self.omnimatrice);
+		//println!("getting omnimatrice {:?}", self.omnimatrice);
 	}
 
 	pub fn get_omni(&self) -> Matrix<f64> {
@@ -139,7 +139,7 @@ impl Camera {
 
 	pub fn set_inverted_omni(&mut self, new: Matrix::<f64>) {
 		self.inverted_omnimatrice = new;
-		println!("getting inverted omnimatrice {:?}", self.inverted_omnimatrice);
+		//println!("getting inverted omnimatrice {:?}", self.inverted_omnimatrice);
 	}
 
 	pub fn get_inverted_omni(&self) -> Matrix<f64> {

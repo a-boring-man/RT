@@ -10,6 +10,8 @@ mod camera;
 mod color;
 mod matrix;
 mod keynput;
+mod hittable;
+mod sphere;
 
 use crate::vec3::Vec3; // my vec3 class use for geometry arithmetic
 use crate::color::{background_color}; // the background debug color function
@@ -19,7 +21,7 @@ use crate::keynput::handle_keypress;
 // global constante
 const IMAGE_WIDTH: usize = 550;
 const IMAGE_HEIGHT: usize = 300;
-const FOV: f64 = 90.0;
+const FOV: f64 = 120.0;
 const ROTATION_SPEED: f64 = 5.0;
 const TRANSLATION_SPEED: f64 = 1.0;
 
@@ -83,8 +85,8 @@ fn main() {
                             _ => {handle_keypress(input, &mut camera);}
                         }
                         window.request_redraw();
-                        println!("key pressed : {}", input.scancode);
-                        println!("origin : {:?}", camera.get_origin());
+                        //println!("key pressed : {}", input.scancode);
+                        //println!("origin : {:?}", camera.get_origin());
                     }
                     _ => {},
                 }
