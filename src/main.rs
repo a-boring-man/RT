@@ -12,6 +12,7 @@ mod matrix;
 mod keynput;
 mod hittable;
 mod sphere;
+mod ray;
 
 use crate::vec3::Vec3; // my vec3 class use for geometry arithmetic
 use crate::color::{background_color}; // the background debug color function
@@ -24,6 +25,7 @@ const IMAGE_HEIGHT: usize = 300;
 const FOV: f64 = 120.0;
 const ROTATION_SPEED: f64 = 5.0;
 const TRANSLATION_SPEED: f64 = 1.0;
+const RAY_T_MAX: f64 = 1.0e30;
 
 // aliassing
 type Color = Vec3;
